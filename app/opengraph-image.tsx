@@ -5,8 +5,8 @@ export const contentType = 'image/png'
 
 export default async function OgImage() {
   const cssRes = await fetch(
-    'https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap',
-    { headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36' } }
+    'https://fonts.googleapis.com/css?family=Archivo+Black',
+    { headers: { 'User-Agent': 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)' } }
   )
   const css = await cssRes.text()
   const fontUrl = css.match(/src: url\((.+?)\)/)?.[1] ?? ''
