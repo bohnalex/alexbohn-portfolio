@@ -1,0 +1,43 @@
+.siteName {
+  position: fixed;
+  top: 24px;
+  right: 72px;
+  font-family: var(--font-display);
+  font-size: 2.3vw;
+  text-transform: uppercase;
+  color: var(--color-nav-active);
+  text-decoration: none;
+  z-index: 101;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.gradientOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 438px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 1) 20%,
+    rgba(255, 255, 255, 0.9) 28%,
+    rgba(255, 255, 255, 0.7) 34%,
+    rgba(255, 255, 255, 0.4) 39%,
+    rgba(255, 255, 255, 0.1) 42%,
+    rgba(255, 255, 255, 0) 43%
+  );
+  pointer-events: none;
+  z-index: 50;
+}
+
+.main {
+  padding-top: var(--content-offset);
+  min-height: 100vh;
+}
+
+.mainGallery {
+  padding-top: var(--content-offset);
+  min-height: 100vh;
+}

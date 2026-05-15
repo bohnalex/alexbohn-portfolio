@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  cursor: none !important;
+}
+
+*:hover,
+*:focus,
+*:active,
+*:focus-visible {
+  cursor: none !important;
+  outline: none !important;
+}
+
+:root {
+  --font-display: 'Archivo Black', sans-serif;
+  --color-bg: #ffffff;
+  --color-text: #111111;
+  --color-nav-inactive: #cd3232;
+  --color-nav-active: #111111;
+  --nav-height: 130px;
+  --content-offset: 183px;
+  --grid-padding: 72px;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  cursor: none;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+body {
+  font-family: var(--font-display);
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+  cursor: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  cursor: none !important;
+}
+
+button,
+[role='button'],
+label,
+input,
+select,
+textarea {
+  cursor: none !important;
+  font-family: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* Restore cursor inside Sanity Studio */
+#sanity,
+#sanity * {
+  cursor: auto !important;
+}
+#sanity button,
+#sanity a,
+#sanity [role='button'],
+#sanity label,
+#sanity input,
+#sanity select,
+#sanity textarea {
+  cursor: pointer !important;
+}
+
+ul,
+ol {
+  list-style: none;
+}

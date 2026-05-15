@@ -1,0 +1,40 @@
+.masonry {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 52px;
+  padding: 0 0 10px;
+}
+
+.item {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  border: none;
+  background: #ffffff;
+}
+
+.inner {
+  position: absolute;
+  inset: 8px;
+}
+
+.img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.empty {
+  padding: 60px 40px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #999;
+}
+
+@media (max-width: 900px) {
+  .masonry {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

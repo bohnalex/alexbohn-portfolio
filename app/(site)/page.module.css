@@ -1,0 +1,55 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 72px;
+  gap: 12px;
+}
+
+.cellLink {
+  display: block;
+  text-decoration: none;
+}
+
+.cell {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  padding: 16px;
+  background: #ffffff;
+}
+
+/* Nested positioned container so next/image fill respects the 16px inner inset */
+.cellInner {
+  position: absolute;
+  inset: 16px;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 60vh;
+  color: var(--color-text);
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.empty p {
+  font-size: 2vw;
+}
+
+.empty a {
+  font-size: 1.4vw;
+  color: var(--color-nav-inactive);
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 36px;
+  }
+}

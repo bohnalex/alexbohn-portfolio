@@ -1,0 +1,60 @@
+.cursor {
+  position: fixed;
+  top: -10.5px;
+  left: -10.5px;
+  width: 21px;
+  height: 21px;
+  pointer-events: none;
+  z-index: 9999;
+  will-change: transform;
+  opacity: 0;
+}
+
+.xIcon,
+.leftIcon,
+.rightIcon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 21px;
+  height: 21px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.xIcon svg {
+  transition: transform 0.15s ease;
+}
+
+.leftIcon,
+.rightIcon {
+  opacity: 0;
+}
+
+/* Plus: rotate X 45deg */
+.cursor[data-state='plus'] .xIcon svg {
+  transform: rotate(45deg);
+}
+
+/* Left arrow */
+.cursor[data-state='left'] .xIcon {
+  opacity: 0;
+}
+.cursor[data-state='left'] .leftIcon {
+  opacity: 1;
+}
+
+/* Right arrow */
+.cursor[data-state='right'] .xIcon {
+  opacity: 0;
+}
+.cursor[data-state='right'] .rightIcon {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .cursor {
+    display: none;
+  }
+}

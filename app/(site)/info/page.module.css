@@ -1,0 +1,101 @@
+.page {
+  padding: 48px 40px;
+  max-width: 960px;
+}
+
+.cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.bio {
+  font-size: 14px;
+  line-height: 1.75;
+  color: #222;
+}
+
+.bio p {
+  margin-bottom: 1em;
+}
+
+.bio p:last-child {
+  margin-bottom: 0;
+}
+
+.contact {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contactLink {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #111;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+}
+
+.contactLink:hover {
+  opacity: 0.5;
+}
+
+.rep {
+  margin-top: 8px;
+}
+
+.repLabel {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #999;
+  margin-bottom: 4px;
+}
+
+.repText {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #333;
+  white-space: pre-line;
+}
+
+.sectionLabel {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #999;
+  margin-bottom: 16px;
+}
+
+.clientList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.clientItem {
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  color: #333;
+  line-height: 1.8;
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 32px 20px;
+  }
+
+  .cols {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
