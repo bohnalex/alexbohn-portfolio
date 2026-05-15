@@ -108,7 +108,7 @@ export async function getOverview(): Promise<Overview | null> {
 
 export async function getPortfolios(): Promise<Portfolio[]> {
   return client.fetch(
-    groq`*[_type == "portfolio"] | order(orderRank asc) {
+    groq`*[_type == "portfolio" && !(_id in path("drafts.**"))] | order(orderRank asc) {
       _id, title, slug,
       "thumbnails": images[0..7] { ${IMAGE_FIELDS} }
     }`,
@@ -119,7 +119,7 @@ export async function getPortfolios(): Promise<Portfolio[]> {
 
 export async function getPortfolio(slug: string): Promise<Portfolio | null> {
   return client.fetch(
-    groq`*[_type == "portfolio" && slug.current == $slug][0] {
+    groq`*[_type == "portfolio" && slug.current == $slug && !(_id in path("drafts.**"))][0] {
       title, slug,
       images[] { ${IMAGE_FIELDS} }
     }`,
@@ -130,7 +130,7 @@ export async function getPortfolio(slug: string): Promise<Portfolio | null> {
 
 export async function getClientGalleries(): Promise<ClientGallery[]> {
   return client.fetch(
-    groq`*[_type == "clientGallery"] | order(orderRank asc) {
+    groq`*[_type == "clientGallery" && !(_id in path("drafts.**"))] | order(orderRank asc) {
       _id, name, slug,
       "thumbnails": images[0..7] { ${IMAGE_FIELDS} }
     }`,
@@ -141,7 +141,7 @@ export async function getClientGalleries(): Promise<ClientGallery[]> {
 
 export async function getClientGallery(slug: string): Promise<ClientGallery | null> {
   return client.fetch(
-    groq`*[_type == "clientGallery" && slug.current == $slug][0] {
+    groq`*[_type == "clientGallery" && slug.current == $slug && !(_id in path("drafts.**"))][0] {
       name, slug,
       images[] { ${IMAGE_FIELDS} }
     }`,
@@ -152,7 +152,7 @@ export async function getClientGallery(slug: string): Promise<ClientGallery | nu
 
 export async function getProjects(): Promise<Project[]> {
   return client.fetch(
-    groq`*[_type == "project"] | order(orderRank asc) {
+    groq`*[_type == "project" && !(_id in path("drafts.**"))] | order(orderRank asc) {
       _id, title, slug, description,
       "thumbnails": images[0..7] { ${IMAGE_FIELDS} }
     }`,
@@ -163,7 +163,7 @@ export async function getProjects(): Promise<Project[]> {
 
 export async function getProject(slug: string): Promise<Project | null> {
   return client.fetch(
-    groq`*[_type == "project" && slug.current == $slug][0] {
+    groq`*[_type == "project" && slug.current == $slug && !(_id in path("drafts.**"))][0] {
       title, slug, description,
       images[] { ${IMAGE_FIELDS} }
     }`,
@@ -174,7 +174,7 @@ export async function getProject(slug: string): Promise<Project | null> {
 
 export async function getMotionEntries(): Promise<MotionEntry[]> {
   return client.fetch(
-    groq`*[_type == "motionEntry"] | order(order asc) {
+    groq`*[_type == "motionEntry" && !(_id in path("drafts.**"))] | order(order asc) {
       _id, title, vimeoUrl,
       previewImage { ${IMAGE_FIELDS} }
     }`,
