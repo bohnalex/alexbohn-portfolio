@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { PortableText } from '@portabletext/react'
+import PortableTextClient from '@/components/PortableTextClient'
 import { getInfo } from '@/sanity/lib/queries'
 import styles from './page.module.css'
 
@@ -14,7 +14,7 @@ export default async function InfoPage() {
         <div className={styles.col}>
           {info?.bio ? (
             <div className={styles.bio}>
-              <PortableText value={info.bio as any} />
+              <PortableTextClient value={info.bio as unknown[]} />
             </div>
           ) : null}
 
@@ -49,14 +49,10 @@ export default async function InfoPage() {
 
         {info?.clientList?.length ? (
           <div className={styles.col}>
-            <p className={styles.sectionLabel}>Clients</p>
-            <ul className={styles.clientList}>
-              {info.clientList.map((name, i) => (
-                <li key={i} className={styles.clientItem}>
-                  {name}
-                </li>
-              ))}
-            </ul>
+            <p className={styles.sectionLabel}>Select Clients</p>
+            <div className={styles.clientList}>
+              <PortableTextClient value={info.clientList as unknown[]} />
+            </div>
           </div>
         ) : null}
       </div>

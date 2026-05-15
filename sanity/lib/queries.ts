@@ -78,7 +78,7 @@ export interface Info {
   email?: string
   instagram?: string
   representation?: string
-  clientList?: string[]
+  clientList?: unknown[]
 }
 
 // ─── Queries ─────────────────────────────────────────────────────────────────

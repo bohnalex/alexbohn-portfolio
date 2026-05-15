@@ -28,8 +28,8 @@ export default function ThreesGrid({ images }: Props) {
             <SanityImage
               image={image}
               fill
-              priority={i < 10}
-              sizes="(max-width: 768px) 33vw, 20vw"
+              priority={i < 5}
+              sizes="(max-width: 768px) 50vw, 20vw"
               style={{ objectFit: 'cover' }}
             />
           </button>

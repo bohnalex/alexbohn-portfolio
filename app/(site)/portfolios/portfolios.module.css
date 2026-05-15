@@ -5,7 +5,7 @@
 .rule {
   border: none;
   border-top: 1px solid #d8d8d8;
-  margin: 0 calc(-1 * var(--grid-padding));
+  margin: 0;
 }
 
 .row {
@@ -40,10 +40,6 @@
 @media (max-width: 768px) {
   .list {
     padding: 0 24px;
-  }
-
-  .rule {
-    margin: 0 -24px;
   }
 
   .thumb {

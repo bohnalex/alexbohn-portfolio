@@ -32,8 +32,8 @@ export const infoSchema = defineType({
       name: 'clientList',
       title: 'Client List',
       type: 'array',
-      of: [{ type: 'string' }],
-      description: 'Displayed as a list on the info page',
+      of: [{ type: 'block', styles: [{ title: 'Normal', value: 'normal' }], lists: [], marks: { decorators: [], annotations: [] } }],
+      description: 'One client per line/block',
     }),
   ],
   preview: {

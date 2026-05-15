@@ -34,6 +34,20 @@ export default function ImageViewer({ images, initialIndex, onClose }: ImageView
     return () => window.removeEventListener('keydown', handler)
   }, [prev, next, onClose])
 
+  // Preload adjacent images so navigation feels instant
+  useEffect(() => {
+    if (images.length <= 1) return
+    const toPreload = [
+      images[(current + 1) % images.length],
+      images[(current - 1 + images.length) % images.length],
+    ]
+    toPreload.forEach((img) => {
+      if (!img?.asset) return
+      const preloadImg = new window.Image()
+      preloadImg.src = urlFor(img).auto('format').quality(85).url()
+    })
+  }, [current, images])
+
   const img = images[current]
   const src = urlFor(img).auto('format').quality(85).url()
   const lqip = img.asset?.metadata?.lqip

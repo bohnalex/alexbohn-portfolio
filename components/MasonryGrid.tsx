@@ -31,8 +31,8 @@ export default function MasonryGrid({ images }: MasonryGridProps) {
               <SanityImage
                 image={image}
                 fill
-                priority={i < 8}
-                sizes="(max-width: 900px) 50vw, 25vw"
+                priority={i < 4}
+                sizes="(max-width: 900px) 50vw, 20vw"
                 style={{ objectFit: 'contain', objectPosition: 'center' }}
               />
             </div>

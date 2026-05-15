@@ -36,8 +36,8 @@ export default function OverviewGrid({ items }: Props) {
                   image={item.image}
                   alt={item.alt}
                   fill
-                  priority={i < 8}
-                  sizes="(max-width: 768px) 50vw, 25vw"
+                  priority={i < 4}
+                  sizes="(max-width: 768px) 50vw, 22vw"
                   style={{ objectFit: 'contain', objectPosition: 'center' }}
                 />
               </div>
