@@ -4,13 +4,9 @@ export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
 export default async function OgImage() {
-  const cssRes = await fetch(
-    'https://fonts.googleapis.com/css?family=Archivo+Black',
-    { headers: { 'User-Agent': 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)' } }
-  )
-  const css = await cssRes.text()
-  const fontUrl = css.match(/src: url\((.+?)\)/)?.[1] ?? ''
-  const fontData = await fetch(fontUrl).then((r) => r.arrayBuffer())
+  const fontData = await fetch(
+    'https://raw.githubusercontent.com/google/fonts/main/ofl/archivoblack/ArchivoBlack-Regular.ttf'
+  ).then((r) => r.arrayBuffer())
 
   return new ImageResponse(
     (
