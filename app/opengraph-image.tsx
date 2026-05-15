@@ -3,7 +3,12 @@ import { ImageResponse } from 'next/og'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
-export default function OgImage() {
+export default async function OgImage() {
+  const fontRes = await fetch(
+    'https://fonts.gstatic.com/s/archivoblack/v22/HTxqL289NzCGg4MkFpRu19D0fLMi.woff2'
+  )
+  const fontData = await fontRes.arrayBuffer()
+
   return new ImageResponse(
     (
       <div
@@ -13,38 +18,40 @@ export default function OgImage() {
           background: '#ffffff',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'flex-start',
-          justifyContent: 'flex-end',
-          padding: '80px 100px',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 24,
         }}
       >
         <div
           style={{
-            fontSize: 96,
+            fontSize: 140,
             fontWeight: 900,
             letterSpacing: '-0.03em',
             color: '#111111',
             lineHeight: 1,
-            fontFamily: 'sans-serif',
+            fontFamily: 'Archivo Black',
           }}
         >
           Alex Bohn
         </div>
         <div
           style={{
-            fontSize: 36,
-            fontWeight: 400,
+            fontSize: 48,
+            fontWeight: 900,
             letterSpacing: '0.08em',
             color: '#cd3232',
-            marginTop: 20,
             textTransform: 'uppercase',
-            fontFamily: 'sans-serif',
+            fontFamily: 'Archivo Black',
           }}
         >
           Photographer
         </div>
       </div>
     ),
-    { ...size }
+    {
+      ...size,
+      fonts: [{ name: 'Archivo Black', data: fontData, weight: 900 }],
+    }
   )
 }
