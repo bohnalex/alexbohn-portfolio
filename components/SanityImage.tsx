@@ -12,6 +12,8 @@ interface SanityImageProps {
   priority?: boolean
   width?: number
   height?: number
+  cropWidth?: number
+  cropHeight?: number
 }
 
 export default function SanityImage({
@@ -24,10 +26,15 @@ export default function SanityImage({
   priority = false,
   width,
   height,
+  cropWidth,
+  cropHeight,
 }: SanityImageProps) {
   if (!image?.asset) return null
 
-  const src = urlFor(image).auto('format').fit('max').quality(85).url()
+  const src =
+    cropWidth && cropHeight
+      ? urlFor(image).width(cropWidth).height(cropHeight).fit('crop').auto('format').quality(85).url()
+      : urlFor(image).auto('format').fit('max').quality(85).url()
   const lqip = image.asset?.metadata?.lqip
   const blurProps = lqip ? { placeholder: 'blur' as const, blurDataURL: lqip } : {}
 

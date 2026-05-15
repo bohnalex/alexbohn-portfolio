@@ -30,6 +30,8 @@ export default function ThreesGrid({ images }: Props) {
               fill
               priority={i < 5}
               sizes="(max-width: 768px) 50vw, 20vw"
+              cropWidth={800}
+              cropHeight={1067}
               style={{ objectFit: 'cover' }}
             />
           </button>
