@@ -1,7 +1,7 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  padding: 72px;
+  padding: var(--grid-padding);
   gap: 12px;
 }
 
@@ -50,6 +50,6 @@
 @media (max-width: 768px) {
   .grid {
     grid-template-columns: repeat(2, 1fr);
-    padding: 36px;
+    padding: 24px;
   }
 }
