@@ -4,7 +4,7 @@
   align-items: flex-end;
   gap: 28px;
   height: var(--nav-height);
-  padding: 0 72px 12px;
+  padding: 0 var(--grid-padding) 12px;
   position: fixed;
   top: 0;
   left: 0;

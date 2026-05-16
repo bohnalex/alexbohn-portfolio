@@ -23,9 +23,9 @@
   --color-text: #111111;
   --color-nav-inactive: #cd3232;
   --color-nav-active: #111111;
-  --nav-height: 130px;
-  --content-offset: 183px;
-  --grid-padding: 72px;
+  --nav-height: clamp(130px, 6.77vw, 300px);
+  --content-offset: clamp(183px, 9.53vw, 400px);
+  --grid-padding: clamp(72px, 3.75vw, 200px);
 }
 
 html {
