@@ -7,7 +7,6 @@ import styles from './Nav.module.css'
 
 const MIN_FONT = 6
 const MAX_FONT = 300
-const GAP = 28
 
 interface NavLink {
   href: string
@@ -36,13 +35,13 @@ export default function Nav({ visibleLinks, paddingBottom }: Props) {
     const links = Array.from(nav.querySelectorAll<HTMLAnchorElement>('a'))
     if (!links.length) return
 
-    const minGapTotal = (links.length - 1) * GAP
-
     const cs = window.getComputedStyle(nav)
     const availableWidth =
       nav.clientWidth -
       parseFloat(cs.paddingLeft || '0') -
       parseFloat(cs.paddingRight || '0')
+    const computedGap = parseFloat(cs.columnGap || '0') || 0
+    const minGapTotal = (links.length - 1) * computedGap
 
     if (availableWidth <= 0) return
 

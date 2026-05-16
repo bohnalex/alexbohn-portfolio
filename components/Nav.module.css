@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  gap: 28px;
+  gap: 1.46vw;
   height: var(--nav-height);
   padding: 0 var(--grid-padding) 12px;
   position: fixed;
