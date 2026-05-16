@@ -27,9 +27,5 @@ export default function NavWrapper({ navSettings }: Props) {
     (link) => !('key' in link) || navSettings[link.key] !== false
   )
 
-  // Manually set nav padding-bottom per visibility state so the centerline stays consistent.
-  // Tune these values to taste.
-  const paddingBottom = navSettings.motionVisible ? 12 : 8
-
-  return <Nav visibleLinks={visibleLinks} paddingBottom={paddingBottom} />
+  return <Nav visibleLinks={visibleLinks} />
 }

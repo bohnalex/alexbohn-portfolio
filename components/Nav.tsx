@@ -15,10 +15,9 @@ interface NavLink {
 
 interface Props {
   visibleLinks: readonly NavLink[]
-  paddingBottom: number
 }
 
-export default function Nav({ visibleLinks, paddingBottom }: Props) {
+export default function Nav({ visibleLinks }: Props) {
   const pathname = usePathname()
   const navRef = useRef<HTMLElement>(null)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -86,7 +85,7 @@ export default function Nav({ visibleLinks, paddingBottom }: Props) {
 
   return (
     <>
-      <nav ref={navRef} className={styles.nav} style={{ paddingBottom }}>
+      <nav ref={navRef} className={styles.nav}>
         {visibleLinks.map(({ href, label }) => {
           const active = href === '/' ? pathname === '/' : pathname.startsWith(href)
           return (
