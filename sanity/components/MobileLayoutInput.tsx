@@ -3,7 +3,7 @@
 import { set, insert, setIfMissing, unset, useClient } from 'sanity'
 import type { ArrayOfObjectsInputProps, ObjectItem } from 'sanity'
 import imageUrlBuilder from '@sanity/image-url'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 function uid() { return Math.random().toString(36).slice(2, 9) }
 
@@ -17,6 +17,39 @@ export function MobileLayoutInput(props: ArrayOfObjectsInputProps) {
   const client  = useClient({ apiVersion: '2024-01-01' })
   const builder = imageUrlBuilder(client)
   const rows    = (props.value ?? []) as MobileRow[]
+
+  // ─── Smooth auto-scroll ───────────────────────────────────────────────────
+  const rafRef      = useRef<number | null>(null)
+  const dragClientY = useRef(0)
+
+  useEffect(() => {
+    const track = (e: DragEvent) => { dragClientY.current = e.clientY }
+    document.addEventListener('dragover', track, { passive: true })
+    return () => document.removeEventListener('dragover', track)
+  }, [])
+
+  function startAutoScroll() {
+    if (rafRef.current !== null) return
+    const EDGE    = 120  // px from viewport edge where scrolling begins
+    const MAX_SPD = 3    // max px per frame (~180 px/s at 60 fps)
+    function tick() {
+      const y  = dragClientY.current
+      const vh = window.innerHeight
+      let speed = 0
+      if (y < EDGE)          speed = -((EDGE - y) / EDGE) * MAX_SPD
+      else if (y > vh - EDGE) speed = ((y - (vh - EDGE)) / EDGE) * MAX_SPD
+      if (speed !== 0) window.scrollBy(0, speed)
+      rafRef.current = requestAnimationFrame(tick)
+    }
+    rafRef.current = requestAnimationFrame(tick)
+  }
+
+  function stopAutoScroll() {
+    if (rafRef.current !== null) {
+      cancelAnimationFrame(rafRef.current)
+      rafRef.current = null
+    }
+  }
 
   const [rowDrag, setRowDrag] = useState<number | null>(null)
   const [rowOver, setRowOver] = useState<number | null>(null)
@@ -34,6 +67,7 @@ export function MobileLayoutInput(props: ArrayOfObjectsInputProps) {
     e.dataTransfer.effectAllowed = 'move'
     e.dataTransfer.setData('drag-type', 'row')
     setRowDrag(index)
+    startAutoScroll()
   }
 
   function rowDragOver(e: React.DragEvent, index: number) {
@@ -58,6 +92,7 @@ export function MobileLayoutInput(props: ArrayOfObjectsInputProps) {
     e.dataTransfer.effectAllowed = 'move'
     e.dataTransfer.setData('drag-type', 'image')
     setImgDrag({ r, i })
+    startAutoScroll()
   }
 
   function imgDragOver(e: React.DragEvent, r: number, i: number) {
@@ -93,6 +128,7 @@ export function MobileLayoutInput(props: ArrayOfObjectsInputProps) {
   function resetAll() {
     setRowDrag(null); setRowOver(null)
     setImgDrag(null); setImgOver(null)
+    stopAutoScroll()
   }
 
   // ─── Row mutations ────────────────────────────────────────────────────────
