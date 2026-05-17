@@ -12,6 +12,12 @@
   line-height: 1;
 }
 
+@media (max-width: 768px) {
+  .siteName {
+    font-size: 4.6vw;
+  }
+}
+
 .gradientOverlay {
   position: fixed;
   top: 0;
