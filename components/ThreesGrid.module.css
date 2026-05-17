@@ -5,6 +5,13 @@
   padding: 10px;
 }
 
+@media (max-width: 768px) {
+  .grid {
+    gap: 5px;
+    padding: 5px;
+  }
+}
+
 .item {
   position: relative;
   aspect-ratio: 3 / 4;
