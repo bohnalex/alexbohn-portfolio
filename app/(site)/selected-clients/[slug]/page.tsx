@@ -42,14 +42,7 @@ export default async function ClientGalleryPage({ params }: Props) {
       {isThrees ? (
         <ThreesGrid images={gallery.images ?? []} />
       ) : isSOB ? (
-        <>
-          <div className={styles.desktopGrid}>
-            <MasonryGrid images={gallery.images ?? []} />
-          </div>
-          <div className={styles.mobileGrid}>
-            <SOBGrid images={gallery.images ?? []} />
-          </div>
-        </>
+        <SOBGrid images={gallery.images ?? []} />
       ) : gallery.mobileLayout?.length ? (
         <>
           <div className={styles.desktopGrid}>

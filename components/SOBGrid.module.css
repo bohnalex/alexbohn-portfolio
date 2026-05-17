@@ -1,16 +1,28 @@
 .grid {
   display: flex;
-  flex-direction: column;
-  gap: 40px;
-  padding: 0 32px 80px;
+  flex-direction: row;
+  gap: 4px;
 }
 
 .item {
   position: relative;
-  width: 100%;
+  flex: 1;
   overflow: hidden;
   background: #f0f0f0;
   border: none;
   padding: 0;
   display: block;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    flex-direction: column;
+    gap: 40px;
+    padding: 0 32px 80px;
+  }
+
+  .item {
+    flex: none;
+    width: 100%;
+  }
 }

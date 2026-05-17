@@ -45,14 +45,7 @@ export default async function ProjectPage({ params }: Props) {
       {isThrees ? (
         <ThreesGrid images={project.images ?? []} />
       ) : isSOB ? (
-        <>
-          <div className={styles.desktopGrid}>
-            <MasonryGrid images={project.images ?? []} />
-          </div>
-          <div className={styles.mobileGrid}>
-            <SOBGrid images={project.images ?? []} />
-          </div>
-        </>
+        <SOBGrid images={project.images ?? []} />
       ) : project.mobileLayout?.length ? (
         <>
           <div className={styles.desktopGrid}>
