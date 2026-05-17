@@ -54,12 +54,20 @@ export default function MobileGalleryGrid({ rows }: Props) {
             )
           }
 
+          // Pair row: derive a shared aspect ratio from the tallest image so neither is cropped
+          const ratios = row.images.map((img: SanityImageAsset) => {
+            const d = img.asset?.metadata?.dimensions
+            return d && d.width > 0 ? d.height / d.width : 1.5
+          })
+          const maxRatio = Math.max(...ratios, 0.1)
+
           return (
             <div key={row._key} className={styles.pair}>
               {row.images.map((img: SanityImageAsset, i: number) => (
                 <button
                   key={img._key ?? i}
                   className={styles.pairCell}
+                  style={{ aspectRatio: `1 / ${maxRatio}` }}
                   onClick={() => setViewerIndex(row.startIndex + i)}
                   aria-label={img.alt ?? `Image ${row.startIndex + i + 1}`}
                 >
@@ -68,7 +76,7 @@ export default function MobileGalleryGrid({ rows }: Props) {
                     fill
                     sizes="50vw"
                     priority={row.startIndex + i < 4}
-                    style={{ objectFit: 'cover' }}
+                    style={{ objectFit: 'contain' }}
                   />
                 </button>
               ))}

@@ -47,9 +47,14 @@
   padding-bottom: 2px;
 }
 
+.desktopGrid {}
+.mobileGrid { display: none; }
+
 @media (max-width: 768px) {
   .grid {
     grid-template-columns: repeat(2, 1fr);
     padding: 24px;
   }
+  .desktopGrid { display: none; }
+  .mobileGrid { display: block; }
 }

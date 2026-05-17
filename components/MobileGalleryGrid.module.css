@@ -1,7 +1,7 @@
 .grid {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 10px;
 }
 
 .pair {
@@ -12,7 +12,6 @@
 .pairCell {
   position: relative;
   flex: 1;
-  aspect-ratio: 2 / 3;
   overflow: hidden;
   background: #f0f0f0;
   border: none;

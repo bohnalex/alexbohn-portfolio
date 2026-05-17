@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getOverview } from '@/sanity/lib/queries'
 import OverviewGrid from '@/components/OverviewGrid'
+import MobileGalleryGrid from '@/components/MobileGalleryGrid'
 import styles from './page.module.css'
 
 export const metadata: Metadata = { title: 'Overview' }
@@ -15,6 +16,19 @@ export default async function OverviewPage() {
         <p>No images yet</p>
         <Link href="/studio">Add content in Studio →</Link>
       </section>
+    )
+  }
+
+  if (overview.mobileLayout?.length) {
+    return (
+      <>
+        <div className={styles.desktopGrid}>
+          <OverviewGrid items={overview.images} />
+        </div>
+        <div className={styles.mobileGrid}>
+          <MobileGalleryGrid rows={overview.mobileLayout} />
+        </div>
+      </>
     )
   }
 

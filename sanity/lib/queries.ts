@@ -28,6 +28,7 @@ export interface OverviewItem {
 
 export interface Overview {
   images: OverviewItem[]
+  mobileLayout?: MobileRow[]
 }
 
 export interface Portfolio {
@@ -100,6 +101,14 @@ const IMAGE_FIELDS = `
   asset->{ _id, _ref, url, metadata { dimensions, lqip } }
 `
 
+const MOBILE_LAYOUT_FIELDS = `
+  "mobileLayout": mobileLayout[] {
+    _key,
+    rowType,
+    "images": images[] { ${IMAGE_FIELDS} }
+  }
+`
+
 export async function getOverview(): Promise<Overview | null> {
   return client.fetch(
     groq`*[_type == "overview" && _id == "singleton-overview"][0] {
@@ -108,7 +117,8 @@ export async function getOverview(): Promise<Overview | null> {
         alt,
         linkUrl,
         image { hotspot, crop, asset->{ _id, url, metadata { dimensions, lqip } } }
-      }
+      },
+      ${MOBILE_LAYOUT_FIELDS}
     }`,
     {},
     { cache: 'no-store' }
@@ -125,14 +135,6 @@ export async function getPortfolios(): Promise<Portfolio[]> {
     { cache: 'no-store' }
   )
 }
-
-const MOBILE_LAYOUT_FIELDS = `
-  "mobileLayout": mobileLayout[] {
-    _key,
-    rowType,
-    "images": images[] { ${IMAGE_FIELDS} }
-  }
-`
 
 export async function getPortfolio(slug: string): Promise<Portfolio | null> {
   return client.fetch(

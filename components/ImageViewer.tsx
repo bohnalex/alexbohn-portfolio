@@ -14,6 +14,7 @@ interface ImageViewerProps {
 
 export default function ImageViewer({ images, initialIndex, onClose }: ImageViewerProps) {
   const [current, setCurrent] = useState(initialIndex)
+  const [touchStartX, setTouchStartX] = useState<number | null>(null)
 
   const prev = useCallback(
     () => setCurrent((i) => (i > 0 ? i - 1 : images.length - 1)),
@@ -53,8 +54,28 @@ export default function ImageViewer({ images, initialIndex, onClose }: ImageView
   const lqip = img.asset?.metadata?.lqip
   const blurProps = lqip ? { placeholder: 'blur' as const, blurDataURL: lqip } : {}
 
+  function handleTouchStart(e: React.TouchEvent) {
+    setTouchStartX(e.touches[0].clientX)
+  }
+
+  function handleTouchEnd(e: React.TouchEvent) {
+    if (touchStartX === null) return
+    const delta = e.changedTouches[0].clientX - touchStartX
+    if (Math.abs(delta) > 40) {
+      if (delta < 0) next()
+      else prev()
+    }
+    setTouchStartX(null)
+  }
+
   return (
-    <div className={styles.overlay} role="dialog" aria-modal="true">
+    <div
+      className={styles.overlay}
+      role="dialog"
+      aria-modal="true"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
       {/* Centered close button */}
       <button className={styles.closeBtn} onClick={onClose} aria-label="Close viewer">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">

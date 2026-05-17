@@ -54,9 +54,30 @@
 @media (max-width: 768px) {
   .desktopGrid { display: none; }
   .mobileGrid { display: block; }
+
+  .page {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .header {
+    top: 0;
+    height: auto;
+    justify-content: flex-start;
+    padding-top: 10px;
+    padding-bottom: 12px;
+  }
+
+  .back {
+    font-size: 7vw;
+  }
+
+  .title {
+    font-size: 7vw;
+  }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 900px) and (min-width: 769px) {
   .page {
     padding: 0 24px;
   }
