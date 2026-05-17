@@ -43,6 +43,13 @@ export const portfolioSchema = defineType({
         },
       ],
     }),
+    defineField({
+      name: 'mobileLayout',
+      title: 'Mobile Layout',
+      type: 'array',
+      description: 'Arrange images into rows for the mobile view. Pair = 2 images side-by-side. Full Width = 1 horizontal image.',
+      of: [{ type: 'mobileRow' }],
+    }),
   ],
   preview: {
     select: { title: 'title', media: 'images.0' },

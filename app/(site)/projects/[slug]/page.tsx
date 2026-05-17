@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { getProject, getProjects } from '@/sanity/lib/queries'
 import MasonryGrid from '@/components/MasonryGrid'
 import ThreesGrid from '@/components/ThreesGrid'
+import MobileGalleryGrid from '@/components/MobileGalleryGrid'
 import styles from '../../gallery.module.css'
 
 interface Props {
@@ -39,10 +40,22 @@ export default async function ProjectPage({ params }: Props) {
       {project.description && (
         <p className={styles.description}>{project.description}</p>
       )}
-      {isThrees
-        ? <ThreesGrid images={project.images ?? []} />
-        : <MasonryGrid images={project.images ?? []} />
-      }
+      {project.mobileLayout?.length ? (
+        <>
+          <div className={styles.desktopGrid}>
+            {isThrees
+              ? <ThreesGrid images={project.images ?? []} />
+              : <MasonryGrid images={project.images ?? []} />}
+          </div>
+          <div className={styles.mobileGrid}>
+            <MobileGalleryGrid rows={project.mobileLayout} />
+          </div>
+        </>
+      ) : (
+        isThrees
+          ? <ThreesGrid images={project.images ?? []} />
+          : <MasonryGrid images={project.images ?? []} />
+      )}
     </section>
   )
 }

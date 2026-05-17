@@ -37,6 +37,7 @@ export interface Portfolio {
   images: SanityImageAsset[]
   coverImage?: SanityImageAsset
   thumbnails?: SanityImageAsset[]
+  mobileLayout?: MobileRow[]
 }
 
 export interface ClientGallery {
@@ -46,6 +47,7 @@ export interface ClientGallery {
   images: SanityImageAsset[]
   coverImage?: SanityImageAsset
   thumbnails?: SanityImageAsset[]
+  mobileLayout?: MobileRow[]
 }
 
 export interface Project {
@@ -56,6 +58,13 @@ export interface Project {
   images: SanityImageAsset[]
   coverImage?: SanityImageAsset
   thumbnails?: SanityImageAsset[]
+  mobileLayout?: MobileRow[]
+}
+
+export interface MobileRow {
+  _key: string
+  rowType: 'pair' | 'full'
+  images: SanityImageAsset[]
 }
 
 export interface MotionEntry {
@@ -117,11 +126,20 @@ export async function getPortfolios(): Promise<Portfolio[]> {
   )
 }
 
+const MOBILE_LAYOUT_FIELDS = `
+  "mobileLayout": mobileLayout[] {
+    _key,
+    rowType,
+    "images": images[] { ${IMAGE_FIELDS} }
+  }
+`
+
 export async function getPortfolio(slug: string): Promise<Portfolio | null> {
   return client.fetch(
     groq`*[_type == "portfolio" && slug.current == $slug && !(_id in path("drafts.**"))][0] {
       title, slug,
-      images[] { ${IMAGE_FIELDS} }
+      images[] { ${IMAGE_FIELDS} },
+      ${MOBILE_LAYOUT_FIELDS}
     }`,
     { slug },
     { cache: 'no-store' }
@@ -143,7 +161,8 @@ export async function getClientGallery(slug: string): Promise<ClientGallery | nu
   return client.fetch(
     groq`*[_type == "clientGallery" && slug.current == $slug && !(_id in path("drafts.**"))][0] {
       name, slug,
-      images[] { ${IMAGE_FIELDS} }
+      images[] { ${IMAGE_FIELDS} },
+      ${MOBILE_LAYOUT_FIELDS}
     }`,
     { slug },
     { cache: 'no-store' }
@@ -165,7 +184,8 @@ export async function getProject(slug: string): Promise<Project | null> {
   return client.fetch(
     groq`*[_type == "project" && slug.current == $slug && !(_id in path("drafts.**"))][0] {
       title, slug, description,
-      images[] { ${IMAGE_FIELDS} }
+      images[] { ${IMAGE_FIELDS} },
+      ${MOBILE_LAYOUT_FIELDS}
     }`,
     { slug },
     { cache: 'no-store' }

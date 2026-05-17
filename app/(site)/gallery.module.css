@@ -48,6 +48,14 @@
   line-height: 1.6;
 }
 
+.desktopGrid {}
+.mobileGrid { display: none; }
+
+@media (max-width: 768px) {
+  .desktopGrid { display: none; }
+  .mobileGrid { display: block; }
+}
+
 @media (max-width: 900px) {
   .page {
     padding: 0 24px;

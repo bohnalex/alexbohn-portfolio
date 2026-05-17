@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getPortfolio, getPortfolios } from '@/sanity/lib/queries'
 import MasonryGrid from '@/components/MasonryGrid'
+import MobileGalleryGrid from '@/components/MobileGalleryGrid'
 import styles from '../../gallery.module.css'
 
 interface Props {
@@ -33,7 +34,18 @@ export default async function PortfolioPage({ params }: Props) {
         </Link>
         <h1 className={styles.title}>{portfolio.title}</h1>
       </header>
-      <MasonryGrid images={portfolio.images ?? []} />
+      {portfolio.mobileLayout?.length ? (
+        <>
+          <div className={styles.desktopGrid}>
+            <MasonryGrid images={portfolio.images ?? []} />
+          </div>
+          <div className={styles.mobileGrid}>
+            <MobileGalleryGrid rows={portfolio.mobileLayout} />
+          </div>
+        </>
+      ) : (
+        <MasonryGrid images={portfolio.images ?? []} />
+      )}
     </section>
   )
 }

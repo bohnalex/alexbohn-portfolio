@@ -1,0 +1,30 @@
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.pair {
+  display: flex;
+  gap: 3px;
+}
+
+.pairCell {
+  position: relative;
+  flex: 1;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  background: #f0f0f0;
+  border: none;
+  padding: 0;
+}
+
+.fullCell {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: #f0f0f0;
+  border: none;
+  padding: 0;
+  display: block;
+}
