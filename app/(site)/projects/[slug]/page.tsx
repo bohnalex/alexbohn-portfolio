@@ -30,7 +30,7 @@ export default async function ProjectPage({ params }: Props) {
   const isThrees = params.slug === 'threes'
 
   return (
-    <section className={isThrees ? undefined : styles.page}>
+    <section className={styles.page}>
       <header className={styles.header}>
         <Link href="/projects" className={styles.back} aria-label="Back to Projects">
           ←

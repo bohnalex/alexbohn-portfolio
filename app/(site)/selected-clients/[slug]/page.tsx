@@ -30,7 +30,7 @@ export default async function ClientGalleryPage({ params }: Props) {
   const isThrees = params.slug === 'threes'
 
   return (
-    <section className={isThrees ? undefined : styles.page}>
+    <section className={styles.page}>
       <header className={styles.header}>
         <Link href="/selected-clients" className={styles.back} aria-label="Back to Selected Clients">
           ←
