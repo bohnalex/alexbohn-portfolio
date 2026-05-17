@@ -5,6 +5,7 @@ import { getProject, getProjects } from '@/sanity/lib/queries'
 import MasonryGrid from '@/components/MasonryGrid'
 import ThreesGrid from '@/components/ThreesGrid'
 import MobileGalleryGrid from '@/components/MobileGalleryGrid'
+import SOBGrid from '@/components/SOBGrid'
 import styles from '../../gallery.module.css'
 
 interface Props {
@@ -28,6 +29,7 @@ export default async function ProjectPage({ params }: Props) {
   if (!project) notFound()
 
   const isThrees = params.slug === 'threes'
+  const isSOB    = params.slug === 'strike-on-box'
 
   return (
     <section className={styles.page}>
@@ -42,6 +44,15 @@ export default async function ProjectPage({ params }: Props) {
       )}
       {isThrees ? (
         <ThreesGrid images={project.images ?? []} />
+      ) : isSOB ? (
+        <>
+          <div className={styles.desktopGrid}>
+            <MasonryGrid images={project.images ?? []} />
+          </div>
+          <div className={styles.mobileGrid}>
+            <SOBGrid images={project.images ?? []} />
+          </div>
+        </>
       ) : project.mobileLayout?.length ? (
         <>
           <div className={styles.desktopGrid}>

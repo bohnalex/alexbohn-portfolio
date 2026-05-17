@@ -1,0 +1,16 @@
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 0 32px 80px;
+}
+
+.item {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: #f0f0f0;
+  border: none;
+  padding: 0;
+  display: block;
+}
