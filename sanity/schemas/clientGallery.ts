@@ -1,6 +1,7 @@
 import { defineField, defineType } from 'sanity'
 import { orderRankField } from '@sanity/orderable-document-list'
 import { BulkImageUpload } from '../components/BulkImageUpload'
+import { MobileLayoutInput } from '../components/MobileLayoutInput'
 
 export const clientGallerySchema = defineType({
   name: 'clientGallery',
@@ -47,8 +48,9 @@ export const clientGallerySchema = defineType({
       name: 'mobileLayout',
       title: 'Mobile Layout',
       type: 'array',
-      description: 'Arrange images into rows for the mobile view. Pair = 2 images side-by-side. Full Width = 1 horizontal image.',
+      description: 'Arrange images into rows for the mobile view. Drag rows to reorder. Click a row to edit its images.',
       of: [{ type: 'mobileRow' }],
+      components: { input: MobileLayoutInput },
     }),
   ],
   preview: {

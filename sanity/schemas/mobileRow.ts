@@ -35,10 +35,4 @@ export const mobileRowSchema = defineType({
       validation: (Rule) => Rule.max(2),
     }),
   ],
-  preview: {
-    select: { rowType: 'rowType', media: 'images.0' },
-    prepare({ rowType, media }: { rowType: string; media: object }) {
-      return { title: rowType === 'pair' ? 'Pair' : 'Full Width', media }
-    },
-  },
 })
