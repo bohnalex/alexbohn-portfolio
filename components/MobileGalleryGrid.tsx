@@ -65,31 +65,28 @@ export default function MobileGalleryGrid({ rows }: Props) {
             )
           }
 
-          // Pair row: shorter image sets the row height; both fill with cover (no grey)
-          const ratios = row.images.map((img: SanityImageAsset) => {
-            const d = getDimensions(img)
-            return d && d.width > 0 ? d.height / d.width : 1.5
-          })
-          const rowRatio = ratios.length > 0 ? Math.min(...ratios) : 1.5
-
+          // Pair row: each cell uses its own natural aspect ratio + a flex value
+          // proportional to that ratio. Both cells end up at identical height with
+          // no cropping and no grey space.
           return (
             <div key={row._key} className={styles.pair}>
-              {[0, 1].map((slot) => {
-                const img = row.images[slot]
-                if (!img) return <div key={slot} className={styles.pairCell} style={{ aspectRatio: `1 / ${rowRatio}` }} />
+              {row.images.map((img: SanityImageAsset, i: number) => {
+                const d = getDimensions(img)
+                const w = d?.width ?? 2
+                const h = d?.height ?? 3
                 return (
                   <button
-                    key={img._key ?? slot}
+                    key={img._key ?? i}
                     className={styles.pairCell}
-                    style={{ aspectRatio: `1 / ${rowRatio}` }}
-                    onClick={() => setViewerIndex(row.startIndex + slot)}
-                    aria-label={img.alt ?? `Image ${row.startIndex + slot + 1}`}
+                    style={{ flex: w / h, aspectRatio: `${w} / ${h}` }}
+                    onClick={() => setViewerIndex(row.startIndex + i)}
+                    aria-label={img.alt ?? `Image ${row.startIndex + i + 1}`}
                   >
                     <SanityImage
                       image={img}
                       fill
                       sizes="50vw"
-                      priority={row.startIndex + slot < 4}
+                      priority={row.startIndex + i < 4}
                       style={{ objectFit: 'cover' }}
                     />
                   </button>
