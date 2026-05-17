@@ -10,6 +10,16 @@ interface Props {
   rows: MobileRow[]
 }
 
+function getDimensions(img: SanityImageAsset): { width: number; height: number } | null {
+  const d = img.asset?.metadata?.dimensions
+  if (d?.width && d?.height) return d
+  // Parse from asset ID: image-{hash}-{W}x{H}-{ext}
+  const ref = (img.asset as { _ref?: string; _id?: string })?._ref ?? (img.asset as { _id?: string })?._id ?? ''
+  const m = ref.match(/-(\d+)x(\d+)-/)
+  if (m) return { width: parseInt(m[1]), height: parseInt(m[2]) }
+  return null
+}
+
 export default function MobileGalleryGrid({ rows }: Props) {
   const [viewerIndex, setViewerIndex] = useState<number | null>(null)
 
@@ -33,8 +43,9 @@ export default function MobileGalleryGrid({ rows }: Props) {
           if (row.rowType === 'full') {
             const img = row.images[0]
             if (!img) return null
-            const w = img.asset?.metadata?.dimensions?.width ?? 3
-            const h = img.asset?.metadata?.dimensions?.height ?? 2
+            const dims = getDimensions(img)
+            const w = dims?.width ?? 3
+            const h = dims?.height ?? 2
             return (
               <button
                 key={row._key}
@@ -56,7 +67,7 @@ export default function MobileGalleryGrid({ rows }: Props) {
 
           // Pair row: derive a shared aspect ratio from the tallest image so neither is cropped
           const ratios = row.images.map((img: SanityImageAsset) => {
-            const d = img.asset?.metadata?.dimensions
+            const d = getDimensions(img)
             return d && d.width > 0 ? d.height / d.width : 1.5
           })
           const maxRatio = Math.max(...ratios, 0.1)

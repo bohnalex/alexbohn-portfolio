@@ -112,9 +112,9 @@ export function MobileLayoutInput(props: ArrayOfObjectsInputProps) {
 
   return (
     <div>
-      {/* Phone screen column */}
+      {/* Phone screen column — constrained to phone-like width */}
       <div
-        style={{ display: 'flex', flexDirection: 'column', gap: 0 }}
+        style={{ display: 'flex', flexDirection: 'column', gap: 0, maxWidth: 260 }}
         onDragEnd={resetAll}
       >
         {rows.map((row, rIdx) => {
