@@ -37,21 +37,19 @@ export default async function ClientGalleryPage({ params }: Props) {
         </Link>
         <h1 className={styles.title}>{gallery.name}</h1>
       </header>
-      {gallery.mobileLayout?.length ? (
+      {isThrees ? (
+        <ThreesGrid images={gallery.images ?? []} />
+      ) : gallery.mobileLayout?.length ? (
         <>
           <div className={styles.desktopGrid}>
-            {isThrees
-              ? <ThreesGrid images={gallery.images ?? []} />
-              : <MasonryGrid images={gallery.images ?? []} />}
+            <MasonryGrid images={gallery.images ?? []} />
           </div>
           <div className={styles.mobileGrid}>
             <MobileGalleryGrid rows={gallery.mobileLayout} />
           </div>
         </>
       ) : (
-        isThrees
-          ? <ThreesGrid images={gallery.images ?? []} />
-          : <MasonryGrid images={gallery.images ?? []} />
+        <MasonryGrid images={gallery.images ?? []} />
       )}
     </section>
   )

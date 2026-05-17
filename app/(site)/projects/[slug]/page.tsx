@@ -40,21 +40,19 @@ export default async function ProjectPage({ params }: Props) {
       {project.description && (
         <p className={styles.description}>{project.description}</p>
       )}
-      {project.mobileLayout?.length ? (
+      {isThrees ? (
+        <ThreesGrid images={project.images ?? []} />
+      ) : project.mobileLayout?.length ? (
         <>
           <div className={styles.desktopGrid}>
-            {isThrees
-              ? <ThreesGrid images={project.images ?? []} />
-              : <MasonryGrid images={project.images ?? []} />}
+            <MasonryGrid images={project.images ?? []} />
           </div>
           <div className={styles.mobileGrid}>
             <MobileGalleryGrid rows={project.mobileLayout} />
           </div>
         </>
       ) : (
-        isThrees
-          ? <ThreesGrid images={project.images ?? []} />
-          : <MasonryGrid images={project.images ?? []} />
+        <MasonryGrid images={project.images ?? []} />
       )}
     </section>
   )
