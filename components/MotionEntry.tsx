@@ -37,12 +37,20 @@ export default function MotionEntry({ title, vimeoUrl, previewImage }: MotionEnt
             onClick={() => setPlaying(true)}
             aria-label={`Play ${title}`}
           >
-            <SanityImage
-              image={previewImage}
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              priority
-            />
+            {previewImage.asset?.url?.toLowerCase().endsWith('.gif') ? (
+              <img
+                src={previewImage.asset.url}
+                alt={previewImage.alt ?? ''}
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            ) : (
+              <SanityImage
+                image={previewImage}
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                priority
+              />
+            )}
             <div className={styles.playOverlay}>
               <svg
                 className={styles.playIcon}
