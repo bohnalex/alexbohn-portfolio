@@ -43,6 +43,13 @@
   min-height: 100vh;
 }
 
+.mainListing {
+  padding-top: var(--content-offset);
+  height: 100dvh;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
 .mainGallery {
   padding-top: var(--content-offset);
   min-height: 100vh;

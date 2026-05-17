@@ -70,7 +70,8 @@
 
   .back {
     font-size: 7vw;
-    font-weight: 700;
+    font-weight: 900;
+    -webkit-text-stroke: 1px currentColor;
   }
 
   .title {
