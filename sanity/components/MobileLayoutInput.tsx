@@ -18,11 +18,8 @@ export function MobileLayoutInput(props: ArrayOfObjectsInputProps) {
   const builder = imageUrlBuilder(client)
   const rows    = (props.value ?? []) as MobileRow[]
 
-  // Row reorder state
   const [rowDrag, setRowDrag] = useState<number | null>(null)
   const [rowOver, setRowOver] = useState<number | null>(null)
-
-  // Image drag state
   const [imgDrag, setImgDrag] = useState<{ r: number; i: number } | null>(null)
   const [imgOver, setImgOver] = useState<{ r: number; i: number } | null>(null)
 
@@ -81,11 +78,9 @@ export function MobileLayoutInput(props: ArrayOfObjectsInputProps) {
     const toImg   = next[toR].images?.[toI]
 
     if (toImg) {
-      // Swap
       next[fromR].images![fromI] = toImg
       next[toR].images![toI]     = fromImg
     } else {
-      // Move to empty slot
       next[fromR].images!.splice(fromI, 1)
       if (!next[toR].images) next[toR].images = []
       next[toR].images![toI] = fromImg
@@ -115,12 +110,11 @@ export function MobileLayoutInput(props: ArrayOfObjectsInputProps) {
 
   // ─── Render ───────────────────────────────────────────────────────────────
 
-  const ROW_H = 140
-
   return (
     <div>
+      {/* Phone screen column */}
       <div
-        style={{ display: 'flex', flexDirection: 'column', gap: 4 }}
+        style={{ display: 'flex', flexDirection: 'column', gap: 0 }}
         onDragEnd={resetAll}
       >
         {rows.map((row, rIdx) => {
@@ -135,37 +129,40 @@ export function MobileLayoutInput(props: ArrayOfObjectsInputProps) {
               onDrop={() => rowDrop(rIdx)}
               style={{
                 display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-                padding: '3px 4px',
-                borderRadius: 4,
-                borderTop: isRowTarget ? '2px solid #2276fc' : '2px solid transparent',
+                alignItems: 'stretch',
+                marginTop: isRowTarget ? 0 : 0,
+                borderTop: isRowTarget ? '3px solid #2276fc' : rIdx === 0 ? 'none' : '3px solid transparent',
                 opacity: rowDrag === rIdx ? 0.35 : 1,
               }}
             >
-              {/* Row drag handle */}
+              {/* Drag handle — thin left strip */}
               <span
                 draggable
                 onDragStart={(e) => rowHandleDragStart(e, rIdx)}
                 style={{
-                  color: '#bbb',
-                  fontSize: 18,
-                  userSelect: 'none',
-                  lineHeight: 1,
-                  cursor: 'grab',
+                  width: 14,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   flexShrink: 0,
+                  color: '#ccc',
+                  fontSize: 13,
+                  cursor: 'grab',
+                  userSelect: 'none',
+                  background: '#fafafa',
+                  borderRight: '1px solid #ebebeb',
                 }}
               >
                 ⠿
               </span>
 
-              {/* Image cells */}
-              <div style={{ flex: 1, display: 'flex', gap: 3, height: ROW_H }}>
+              {/* Image cells — fills remaining width */}
+              <div style={{ flex: 1, display: 'flex', gap: 3, background: '#ebebeb' }}>
                 {isPair ? (
                   [0, 1].map((slot) => {
                     const img = imgs[slot]
                     const ref = img?.asset?._ref
-                    const isDragSrc  = imgDrag?.r === rIdx && imgDrag?.i === slot
+                    const isDragSrc    = imgDrag?.r === rIdx && imgDrag?.i === slot
                     const isDropTarget = imgOver?.r === rIdx && imgOver?.i === slot
                     return (
                       <div
@@ -176,18 +173,17 @@ export function MobileLayoutInput(props: ArrayOfObjectsInputProps) {
                         onDrop={(e) => imgDrop(e, rIdx, slot)}
                         style={{
                           flex: 1,
-                          height: ROW_H,
+                          aspectRatio: '2 / 3',
                           background: '#ebebeb',
-                          borderRadius: 3,
                           overflow: 'hidden',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
+                          position: 'relative',
                           cursor: ref ? 'grab' : 'default',
                           opacity: isDragSrc ? 0.25 : 1,
                           outline: isDropTarget ? '2px solid #2276fc' : 'none',
                           outlineOffset: -2,
-                          transition: 'outline 0.08s',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
                         }}
                       >
                         {ref ? (
@@ -195,10 +191,10 @@ export function MobileLayoutInput(props: ArrayOfObjectsInputProps) {
                             src={thumb(ref)}
                             alt=""
                             draggable={false}
-                            style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                           />
                         ) : (
-                          <span style={{ fontSize: 11, color: '#bbb', userSelect: 'none' }}>empty</span>
+                          <span style={{ fontSize: 10, color: '#bbb', userSelect: 'none' }}>empty</span>
                         )}
                       </div>
                     )
@@ -217,17 +213,17 @@ export function MobileLayoutInput(props: ArrayOfObjectsInputProps) {
                         onDrop={(e) => imgDrop(e, rIdx, 0)}
                         style={{
                           flex: 1,
-                          height: ROW_H,
+                          aspectRatio: '3 / 2',
                           background: '#ebebeb',
-                          borderRadius: 3,
                           overflow: 'hidden',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
+                          position: 'relative',
                           cursor: ref ? 'grab' : 'default',
                           opacity: isDragSrc ? 0.25 : 1,
                           outline: isDropTarget ? '2px solid #2276fc' : 'none',
                           outlineOffset: -2,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
                         }}
                       >
                         {ref ? (
@@ -235,10 +231,10 @@ export function MobileLayoutInput(props: ArrayOfObjectsInputProps) {
                             src={thumb(ref)}
                             alt=""
                             draggable={false}
-                            style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                           />
                         ) : (
-                          <span style={{ fontSize: 11, color: '#bbb', userSelect: 'none' }}>empty</span>
+                          <span style={{ fontSize: 10, color: '#bbb', userSelect: 'none' }}>empty</span>
                         )}
                       </div>
                     )
@@ -246,20 +242,29 @@ export function MobileLayoutInput(props: ArrayOfObjectsInputProps) {
                 )}
               </div>
 
-              {/* Type label + remove */}
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, flexShrink: 0 }}>
-                <span style={{ fontSize: 10, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.05em', userSelect: 'none' }}>
-                  {isPair ? 'pair' : 'full'}
-                </span>
-                <button
-                  type="button"
-                  onClick={(e) => removeRow(row._key as string, e)}
-                  title="Remove row"
-                  style={{ background: 'none', border: '1px solid #e0e0e0', borderRadius: 3, cursor: 'pointer', color: '#aaa', fontSize: 14, lineHeight: 1, padding: '2px 6px' }}
-                >
-                  ×
-                </button>
-              </div>
+              {/* Remove — thin right strip */}
+              <button
+                type="button"
+                onClick={(e) => removeRow(row._key as string, e)}
+                title="Remove row"
+                style={{
+                  width: 18,
+                  flexShrink: 0,
+                  background: '#fafafa',
+                  border: 'none',
+                  borderLeft: '1px solid #ebebeb',
+                  cursor: 'pointer',
+                  color: '#bbb',
+                  fontSize: 14,
+                  lineHeight: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: 0,
+                }}
+              >
+                ×
+              </button>
             </div>
           )
         })}
