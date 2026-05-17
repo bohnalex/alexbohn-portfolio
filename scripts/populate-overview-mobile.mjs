@@ -18,7 +18,7 @@ const overview = await client.fetch(
       _key,
       alt,
       image {
-        asset->{ _ref, url, metadata { dimensions } }
+        asset->{ _id, url, metadata { dimensions } }
       }
     }
   }`
@@ -31,56 +31,57 @@ if (!overview?.images?.length) {
 
 console.log(`Found ${overview.images.length} overview images`)
 
-// Classify each image
 const classified = overview.images.map((item) => {
   const dims = item.image?.asset?.metadata?.dimensions
-  const isLandscape = dims ? dims.width > dims.height : false
-  return { ref: item.image?.asset?._ref, isLandscape }
+  // Also parse from asset ID as fallback: image-{hash}-{W}x{H}-{ext}
+  const id = item.image?.asset?._id ?? ''
+  const m = id.match(/-(\d+)x(\d+)-/)
+  const w = dims?.width  ?? (m ? parseInt(m[1]) : 0)
+  const h = dims?.height ?? (m ? parseInt(m[2]) : 0)
+  const isLandscape = w > 0 && h > 0 ? w > h : false
+  return { ref: id, isLandscape }
 }).filter(item => item.ref)
 
-// Build mobileLayout rows
+// Build rows: landscapes → full, portraits → always paired.
+// A pending portrait waits for the next portrait to pair with;
+// landscapes are flushed in place. Lone portrait at end → pair with one slot.
 const rows = []
-const portrait = classified.filter(i => !i.isLandscape)
-const landscape = classified.filter(i => i.isLandscape)
+let pending = null
 
-// Interleave: process in original order
-const remaining = [...classified]
-let i = 0
-while (i < remaining.length) {
-  const cur = remaining[i]
-  if (cur.isLandscape) {
+for (const img of classified) {
+  if (img.isLandscape) {
     rows.push({
       _type: 'mobileRow',
       _key: uid(),
       rowType: 'full',
-      images: [{ _type: 'image', _key: uid(), asset: { _type: 'reference', _ref: cur.ref } }],
+      images: [{ _type: 'image', _key: uid(), asset: { _type: 'reference', _ref: img.ref } }],
     })
-    i++
   } else {
-    // Try to pair with next portrait
-    const next = remaining[i + 1]
-    if (next && !next.isLandscape) {
+    if (pending) {
       rows.push({
         _type: 'mobileRow',
         _key: uid(),
         rowType: 'pair',
         images: [
-          { _type: 'image', _key: uid(), asset: { _type: 'reference', _ref: cur.ref } },
-          { _type: 'image', _key: uid(), asset: { _type: 'reference', _ref: next.ref } },
+          { _type: 'image', _key: uid(), asset: { _type: 'reference', _ref: pending.ref } },
+          { _type: 'image', _key: uid(), asset: { _type: 'reference', _ref: img.ref } },
         ],
       })
-      i += 2
+      pending = null
     } else {
-      // Lone portrait — put in a full row
-      rows.push({
-        _type: 'mobileRow',
-        _key: uid(),
-        rowType: 'full',
-        images: [{ _type: 'image', _key: uid(), asset: { _type: 'reference', _ref: cur.ref } }],
-      })
-      i++
+      pending = img
     }
   }
+}
+
+// Flush any lone trailing portrait
+if (pending) {
+  rows.push({
+    _type: 'mobileRow',
+    _key: uid(),
+    rowType: 'pair',
+    images: [{ _type: 'image', _key: uid(), asset: { _type: 'reference', _ref: pending.ref } }],
+  })
 }
 
 console.log(`Built ${rows.length} rows`)

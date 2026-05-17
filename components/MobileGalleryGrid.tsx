@@ -65,32 +65,36 @@ export default function MobileGalleryGrid({ rows }: Props) {
             )
           }
 
-          // Pair row: derive a shared aspect ratio from the tallest image so neither is cropped
+          // Pair row: shorter image sets the row height; both fill with cover (no grey)
           const ratios = row.images.map((img: SanityImageAsset) => {
             const d = getDimensions(img)
             return d && d.width > 0 ? d.height / d.width : 1.5
           })
-          const maxRatio = Math.max(...ratios, 0.1)
+          const rowRatio = ratios.length > 0 ? Math.min(...ratios) : 1.5
 
           return (
             <div key={row._key} className={styles.pair}>
-              {row.images.map((img: SanityImageAsset, i: number) => (
-                <button
-                  key={img._key ?? i}
-                  className={styles.pairCell}
-                  style={{ aspectRatio: `1 / ${maxRatio}` }}
-                  onClick={() => setViewerIndex(row.startIndex + i)}
-                  aria-label={img.alt ?? `Image ${row.startIndex + i + 1}`}
-                >
-                  <SanityImage
-                    image={img}
-                    fill
-                    sizes="50vw"
-                    priority={row.startIndex + i < 4}
-                    style={{ objectFit: 'contain' }}
-                  />
-                </button>
-              ))}
+              {[0, 1].map((slot) => {
+                const img = row.images[slot]
+                if (!img) return <div key={slot} className={styles.pairCell} style={{ aspectRatio: `1 / ${rowRatio}` }} />
+                return (
+                  <button
+                    key={img._key ?? slot}
+                    className={styles.pairCell}
+                    style={{ aspectRatio: `1 / ${rowRatio}` }}
+                    onClick={() => setViewerIndex(row.startIndex + slot)}
+                    aria-label={img.alt ?? `Image ${row.startIndex + slot + 1}`}
+                  >
+                    <SanityImage
+                      image={img}
+                      fill
+                      sizes="50vw"
+                      priority={row.startIndex + slot < 4}
+                      style={{ objectFit: 'cover' }}
+                    />
+                  </button>
+                )
+              })}
             </div>
           )
         })}
