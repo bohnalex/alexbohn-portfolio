@@ -1,12 +1,13 @@
 .grid {
   display: flex;
   flex-direction: row;
-  gap: 4px;
+  gap: 10px;
 }
 
 .item {
   position: relative;
   flex: 1;
+  min-width: 0;
   overflow: hidden;
   background: #f0f0f0;
   border: none;
