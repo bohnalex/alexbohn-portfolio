@@ -62,16 +62,16 @@ export default function Nav({ visibleLinks }: Props) {
     fitNav()
     document.fonts.ready.then(fitNav)
 
-    let raf = 0
+    let timer = 0
     const onResize = () => {
-      cancelAnimationFrame(raf)
-      raf = requestAnimationFrame(fitNav)
+      clearTimeout(timer)
+      timer = window.setTimeout(fitNav, 150)
     }
 
     window.addEventListener('resize', onResize)
     return () => {
       window.removeEventListener('resize', onResize)
-      cancelAnimationFrame(raf)
+      clearTimeout(timer)
     }
   }, [fitNav])
 
