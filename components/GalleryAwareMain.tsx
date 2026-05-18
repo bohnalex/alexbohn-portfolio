@@ -17,5 +17,27 @@ export default function GalleryAwareMain({ children }: { children: React.ReactNo
     if (isListing) window.scrollTo(0, 0)
   }, [pathname, isListing])
 
+  useEffect(() => {
+    const el = document.documentElement
+
+    const update = () => {
+      if (!isListing) {
+        el.style.overflowY = ''
+        return
+      }
+      // Only lock scroll when all content fits — allows scroll if accessibility
+      // zoom or large text pushes content beyond the viewport
+      const fits = el.scrollHeight <= window.innerHeight + 1
+      el.style.overflowY = fits ? 'hidden' : ''
+    }
+
+    update()
+    window.addEventListener('resize', update)
+    return () => {
+      window.removeEventListener('resize', update)
+      el.style.overflowY = ''
+    }
+  }, [isListing, pathname])
+
   return <main className={cls}>{children}</main>
 }
