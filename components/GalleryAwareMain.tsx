@@ -1,6 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
+import { useEffect } from 'react'
 import styles from '@/app/(site)/layout.module.css'
 
 const GALLERY_ROUTE  = /^\/(portfolios|selected-clients|projects)\/[^/]+/
@@ -11,5 +12,10 @@ export default function GalleryAwareMain({ children }: { children: React.ReactNo
   const isGallery  = GALLERY_ROUTE.test(pathname)
   const isListing  = LISTING_ROUTES.has(pathname)
   const cls = isGallery ? styles.mainGallery : isListing ? styles.mainListing : styles.main
+
+  useEffect(() => {
+    if (isListing) window.scrollTo(0, 0)
+  }, [pathname, isListing])
+
   return <main className={cls}>{children}</main>
 }

@@ -45,9 +45,7 @@
 
 .mainListing {
   padding-top: var(--content-offset);
-  height: 100dvh;
-  overflow: hidden;
-  box-sizing: border-box;
+  min-height: 100vh;
 }
 
 .mainGallery {
