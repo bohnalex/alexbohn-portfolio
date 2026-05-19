@@ -13,13 +13,12 @@
   z-index: 100;
   font-size: 2.3vw;
   font-family: var(--font-display);
-  mix-blend-mode: difference;
 }
 
 .link {
   text-transform: uppercase;
   text-decoration: none;
-  color: #ffffff;
+  color: var(--color-nav-active);
   white-space: nowrap;
   line-height: 1;
   letter-spacing: -0.02em;
@@ -28,13 +27,11 @@
 
 .link:hover {
   color: var(--color-nav-inactive);
-  isolation: isolate;
   font-style: italic;
 }
 
 .active {
   color: var(--color-nav-inactive);
-  isolation: isolate;
   font-style: normal;
 }
 
@@ -50,7 +47,6 @@
   letter-spacing: -0.02em;
   pointer-events: none;
   opacity: 0;
-  isolation: isolate;
 }
 
 .logoReady {
@@ -86,7 +82,7 @@
   display: block;
   width: 24px;
   height: 1.5px;
-  background: #ffffff;
+  background: var(--color-nav-active);
   transition: transform 0.2s ease, opacity 0.2s ease;
   transform-origin: center;
 }
