@@ -41,7 +41,7 @@
 }
 
 @media (max-width: 768px) {
-  .masonry.loose {
-    gap: 80px;
+  .loose {
+    gap: 100px;
   }
 }

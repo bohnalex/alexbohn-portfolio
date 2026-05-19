@@ -24,8 +24,8 @@
     padding: 0 32px 80px;
   }
 
-  .grid.loose {
-    gap: 80px;
+  .loose {
+    gap: 100px;
   }
 
   .item {

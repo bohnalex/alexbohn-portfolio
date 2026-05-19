@@ -5,8 +5,8 @@
 }
 
 @media (max-width: 768px) {
-  .grid.loose {
-    gap: 100px;
+  .loose {
+    gap: 120px;
   }
 }
 
