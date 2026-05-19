@@ -28,6 +28,7 @@
   line-height: 1;
   letter-spacing: -0.02em;
   pointer-events: all;
+  transform: translateY(-5px);
 }
 
 .back:hover {
