@@ -122,7 +122,7 @@ export async function getOverview(): Promise<Overview | null> {
       ${MOBILE_LAYOUT_FIELDS}
     }`,
     {},
-    { cache: 'no-store' }
+    { next: { revalidate: 60 } }
   )
 }
 
@@ -133,7 +133,7 @@ export async function getPortfolios(): Promise<Portfolio[]> {
       "thumbnails": images[0..7] { ${IMAGE_FIELDS} }
     }`,
     {},
-    { cache: 'no-store' }
+    { next: { revalidate: 60 } }
   )
 }
 
@@ -145,7 +145,7 @@ export async function getPortfolio(slug: string): Promise<Portfolio | null> {
       ${MOBILE_LAYOUT_FIELDS}
     }`,
     { slug },
-    { cache: 'no-store' }
+    { next: { revalidate: 60 } }
   )
 }
 
@@ -156,7 +156,7 @@ export async function getClientGalleries(): Promise<ClientGallery[]> {
       "thumbnails": images[0..7] { ${IMAGE_FIELDS} }
     }`,
     {},
-    { cache: 'no-store' }
+    { next: { revalidate: 60 } }
   )
 }
 
@@ -168,7 +168,7 @@ export async function getClientGallery(slug: string): Promise<ClientGallery | nu
       ${MOBILE_LAYOUT_FIELDS}
     }`,
     { slug },
-    { cache: 'no-store' }
+    { next: { revalidate: 60 } }
   )
 }
 
@@ -179,7 +179,7 @@ export async function getProjects(): Promise<Project[]> {
       "thumbnails": images[0..7] { ${IMAGE_FIELDS} }
     }`,
     {},
-    { cache: 'no-store' }
+    { next: { revalidate: 60 } }
   )
 }
 
@@ -191,7 +191,7 @@ export async function getProject(slug: string): Promise<Project | null> {
       ${MOBILE_LAYOUT_FIELDS}
     }`,
     { slug },
-    { cache: 'no-store' }
+    { next: { revalidate: 60 } }
   )
 }
 
@@ -202,7 +202,7 @@ export async function getMotionEntries(): Promise<MotionEntry[]> {
       previewImage { ${IMAGE_FIELDS} }
     }`,
     {},
-    { cache: 'no-store' }
+    { next: { revalidate: 60 } }
   )
 }
 
@@ -212,7 +212,7 @@ export async function getNavSettings(): Promise<NavSettings> {
       portfoliosVisible, selectedClientsVisible, projectsVisible, motionVisible, infoVisible
     }`,
     {},
-    { cache: 'no-store' }
+    { next: { revalidate: 60 } }
   )
   return result ?? {
     portfoliosVisible: true,
@@ -229,6 +229,6 @@ export async function getInfo(): Promise<Info | null> {
       bio, email, phone, instagram, representation, clientList
     }`,
     {},
-    { cache: 'no-store' }
+    { next: { revalidate: 60 } }
   )
 }
