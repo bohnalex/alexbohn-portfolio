@@ -8,6 +8,7 @@ import styles from './SOBGrid.module.css'
 
 interface Props {
   images: SanityImageAsset[]
+  loose?: boolean
 }
 
 function getDimensions(img: SanityImageAsset): { width: number; height: number } | null {
@@ -19,14 +20,14 @@ function getDimensions(img: SanityImageAsset): { width: number; height: number }
   return null
 }
 
-export default function SOBGrid({ images }: Props) {
+export default function SOBGrid({ images, loose }: Props) {
   const [viewerIndex, setViewerIndex] = useState<number | null>(null)
 
   if (!images?.length) return null
 
   return (
     <>
-      <div className={styles.grid}>
+      <div className={`${styles.grid}${loose ? ` ${styles.loose}` : ''}`}>
         {images.map((image, i) => {
           const d = getDimensions(image)
           const w = d?.width ?? 3

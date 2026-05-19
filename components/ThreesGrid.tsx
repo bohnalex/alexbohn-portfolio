@@ -8,16 +8,17 @@ import styles from './ThreesGrid.module.css'
 
 interface Props {
   images: SanityImageAsset[]
+  loose?: boolean
 }
 
-export default function ThreesGrid({ images }: Props) {
+export default function ThreesGrid({ images, loose }: Props) {
   const [viewerIndex, setViewerIndex] = useState<number | null>(null)
 
   if (!images?.length) return null
 
   return (
     <>
-      <div className={styles.grid}>
+      <div className={`${styles.grid}${loose ? ` ${styles.loose}` : ''}`}>
         {images.map((image, i) => (
           <button
             key={image._key ?? i}

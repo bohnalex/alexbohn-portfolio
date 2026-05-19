@@ -24,6 +24,10 @@
     padding: 0 32px 80px;
   }
 
+  .grid.loose {
+    gap: 80px;
+  }
+
   .item {
     flex: none;
     width: 100%;

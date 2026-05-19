@@ -4,6 +4,12 @@
   gap: 60px;
 }
 
+@media (max-width: 768px) {
+  .grid.loose {
+    gap: 100px;
+  }
+}
+
 .pair {
   display: flex;
   gap: 3px;

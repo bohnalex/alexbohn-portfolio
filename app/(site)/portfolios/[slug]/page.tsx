@@ -35,11 +35,11 @@ export default async function PortfolioPage({ params }: Props) {
             <MasonryGrid images={portfolio.images ?? []} />
           </div>
           <div className={styles.mobileGrid}>
-            <MobileGalleryGrid rows={portfolio.mobileLayout} />
+            <MobileGalleryGrid rows={portfolio.mobileLayout} loose />
           </div>
         </>
       ) : (
-        <MasonryGrid images={portfolio.images ?? []} />
+        <MasonryGrid images={portfolio.images ?? []} loose />
       )}
     </section>
   )

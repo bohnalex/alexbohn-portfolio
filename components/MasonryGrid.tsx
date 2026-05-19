@@ -8,9 +8,10 @@ import styles from './MasonryGrid.module.css'
 
 interface MasonryGridProps {
   images: SanityImageAsset[]
+  loose?: boolean
 }
 
-export default function MasonryGrid({ images }: MasonryGridProps) {
+export default function MasonryGrid({ images, loose }: MasonryGridProps) {
   const [viewerIndex, setViewerIndex] = useState<number | null>(null)
 
   if (!images?.length) {
@@ -19,7 +20,7 @@ export default function MasonryGrid({ images }: MasonryGridProps) {
 
   return (
     <>
-      <div className={styles.masonry}>
+      <div className={`${styles.masonry}${loose ? ` ${styles.loose}` : ''}`}>
         {images.map((image, i) => (
           <button
             key={image._key ?? i}

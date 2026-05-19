@@ -35,20 +35,20 @@ export default async function ClientGalleryPage({ params }: Props) {
     <section className={styles.page}>
       <GalleryHeader backHref="/selected-clients" backLabel="Back to Selected Clients" title={gallery.name} />
       {isThrees ? (
-        <ThreesGrid images={gallery.images ?? []} />
+        <ThreesGrid images={gallery.images ?? []} loose />
       ) : isSOB ? (
-        <SOBGrid images={gallery.images ?? []} />
+        <SOBGrid images={gallery.images ?? []} loose />
       ) : gallery.mobileLayout?.length ? (
         <>
           <div className={styles.desktopGrid}>
             <MasonryGrid images={gallery.images ?? []} />
           </div>
           <div className={styles.mobileGrid}>
-            <MobileGalleryGrid rows={gallery.mobileLayout} />
+            <MobileGalleryGrid rows={gallery.mobileLayout} loose />
           </div>
         </>
       ) : (
-        <MasonryGrid images={gallery.images ?? []} />
+        <MasonryGrid images={gallery.images ?? []} loose />
       )}
     </section>
   )

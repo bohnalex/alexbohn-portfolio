@@ -10,6 +10,11 @@
     gap: 5px;
     padding: 5px;
   }
+
+  .grid.loose {
+    gap: 80px;
+    padding: 5px;
+  }
 }
 
 .item {
