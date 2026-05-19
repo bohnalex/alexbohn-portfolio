@@ -13,16 +13,41 @@
   z-index: 100;
   font-size: 2.3vw;
   font-family: var(--font-display);
+  mix-blend-mode: difference;
+}
+
+/* Non-blended overlay — same layout, no mix-blend-mode */
+.navOverlay {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1.46vw;
+  height: var(--nav-height);
+  padding: 0 var(--grid-padding) 0.625vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: transparent;
+  z-index: 100;
+  font-size: 2.3vw;
+  font-family: var(--font-display);
+  pointer-events: none;
 }
 
 .link {
   text-transform: uppercase;
   text-decoration: none;
-  color: var(--color-nav-active);
+  color: #ffffff;
   white-space: nowrap;
   line-height: 1;
   letter-spacing: -0.02em;
   font-style: italic;
+}
+
+/* Invisible placeholder in overlay for inactive links (maintains flex layout) */
+.linkHidden {
+  visibility: hidden;
 }
 
 .link:hover {
@@ -126,6 +151,12 @@
 
 @media (max-width: 768px) {
   .nav {
+    padding: 0 24px 12px;
+    font-size: 4vw;
+    gap: 0;
+  }
+
+  .navOverlay {
     padding: 0 24px 12px;
     font-size: 4vw;
     gap: 0;

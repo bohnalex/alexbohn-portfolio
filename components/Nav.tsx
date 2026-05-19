@@ -21,6 +21,7 @@ interface Props {
 export default function Nav({ visibleLinks }: Props) {
   const pathname = usePathname()
   const navRef = useRef<HTMLElement>(null)
+  const navOverlayRef = useRef<HTMLElement>(null)
   const linkRefs = useRef<Map<string, HTMLAnchorElement>>(new Map())
   const logoRef = useRef<HTMLSpanElement>(null)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -91,6 +92,7 @@ export default function Nav({ visibleLinks }: Props) {
 
     if (window.innerWidth <= 768) {
       nav.style.fontSize = ''
+      if (navOverlayRef.current) navOverlayRef.current.style.fontSize = ''
       return
     }
 
@@ -119,6 +121,7 @@ export default function Nav({ visibleLinks }: Props) {
     }
 
     nav.style.fontSize = `${lo}px`
+    if (navOverlayRef.current) navOverlayRef.current.style.fontSize = `${lo}px`
     logoUpdateRef.current()
   }, [])
 
@@ -152,6 +155,7 @@ export default function Nav({ visibleLinks }: Props) {
 
   return (
     <>
+      {/* Blended nav — inactive links use mix-blend-mode:difference; active link transparent */}
       <nav
         ref={navRef}
         className={styles.nav}
@@ -168,11 +172,32 @@ export default function Nav({ visibleLinks }: Props) {
                 if (el) linkRefs.current.set(href, el)
                 else linkRefs.current.delete(href)
               }}
-              className={`${styles.link} ${active ? styles.active : ''}`}
+              className={styles.link}
+              style={active ? { color: 'transparent' } : undefined}
               onMouseEnter={() => setHoveredHref(href)}
             >
               {label}
             </Link>
+          )
+        })}
+      </nav>
+
+      {/* Non-blended overlay — active link (red), logo, hamburger */}
+      <nav
+        ref={navOverlayRef}
+        className={styles.navOverlay}
+        aria-hidden="true"
+      >
+        {!isGallery && visibleLinks.map(({ href, label }) => {
+          const active = href === '/' ? pathname === '/' : pathname.startsWith(href)
+          return (
+            <span
+              key={href}
+              className={`${styles.link} ${active ? styles.active : styles.linkHidden}`}
+              style={{ pointerEvents: 'none' }}
+            >
+              {label}
+            </span>
           )
         })}
 
@@ -182,6 +207,7 @@ export default function Nav({ visibleLinks }: Props) {
             onClick={() => setMobileOpen((o) => !o)}
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileOpen}
+            style={{ pointerEvents: 'all' }}
           >
             <span className={`${styles.hamburgerBar} ${mobileOpen ? styles.hamburgerBar1Open : ''}`} />
             <span className={`${styles.hamburgerBar} ${mobileOpen ? styles.hamburgerBar2Open : ''}`} />
@@ -193,7 +219,7 @@ export default function Nav({ visibleLinks }: Props) {
           className={`${styles.logo} ${logoReady ? styles.logoReady : ''}`}
           style={logoLeft !== null ? { left: logoLeft } : undefined}
         >
-          <Link href="/" className={styles.logoLink}>Alex Bohn</Link>
+          <Link href="/" className={styles.logoLink} style={{ pointerEvents: 'all' }}>Alex Bohn</Link>
         </span>
       </nav>
 
