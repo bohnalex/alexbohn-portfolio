@@ -62,7 +62,9 @@ export default function GalleryHeader({ backHref, backLabel, title }: Props) {
   return (
     <header className={styles.header}>
       <Link href={backHref} className={styles.back} onClick={handleBack} aria-label={backLabel}>
-        ←
+        <svg viewBox="0 0 24 18" fill="currentColor" className={styles.backArrow} aria-hidden="true">
+          <path d="M11 0L0 9L11 18L11 12.5L24 12.5L24 5.5L11 5.5Z" />
+        </svg>
       </Link>
       <h1 ref={titleRef} className={styles.title} style={titleStyle}>
         {title}
