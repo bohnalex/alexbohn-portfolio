@@ -60,15 +60,21 @@ export default function GalleryHeader({ backHref, backLabel, title }: Props) {
   }
 
   return (
-    <header className={styles.header}>
-      <Link href={backHref} className={styles.back} onClick={handleBack} aria-label={backLabel}>
-        <svg viewBox="0 0 32 14" fill="currentColor" className={styles.backArrow} aria-hidden="true">
-          <path d="M0 7L11 0L11 5.5L32 5.5L32 8.5L11 8.5L11 14Z" />
-        </svg>
-      </Link>
-      <h1 ref={titleRef} className={styles.title} style={titleStyle}>
-        {title}
-      </h1>
-    </header>
+    <>
+      {/* Back button — no blend mode so arrow stays red */}
+      <div className={styles.backContainer}>
+        <Link href={backHref} className={styles.back} onClick={handleBack} aria-label={backLabel}>
+          <svg viewBox="0 0 32 14" fill="currentColor" className={styles.backArrow} aria-hidden="true">
+            <path d="M0 7L11 0L11 5.5L32 5.5L32 8.5L11 8.5L11 14Z" />
+          </svg>
+        </Link>
+      </div>
+      {/* Title in its own fixed container so mix-blend-mode applies against page content */}
+      <div className={styles.titleBlend}>
+        <h1 ref={titleRef} className={styles.title} style={titleStyle}>
+          {title}
+        </h1>
+      </div>
+    </>
   )
 }

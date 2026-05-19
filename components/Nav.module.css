@@ -27,11 +27,14 @@
 }
 
 .link:hover {
+  color: var(--color-nav-inactive);
+  isolation: isolate;
   font-style: italic;
 }
 
 .active {
-  color: #ffffff;
+  color: var(--color-nav-inactive);
+  isolation: isolate;
   font-style: normal;
 }
 
@@ -47,7 +50,7 @@
   letter-spacing: -0.02em;
   pointer-events: none;
   opacity: 0;
-  color: #ffffff;
+  isolation: isolate;
 }
 
 .logoReady {
@@ -56,14 +59,13 @@
 }
 
 .logoLink {
-  color: #ffffff;
+  color: var(--color-nav-inactive);
   text-decoration: none;
   pointer-events: all;
-  transition: color 0.15s ease;
 }
 
 .logoLink:hover {
-  color: #ffffff;
+  color: var(--color-nav-inactive);
 }
 
 /* Hamburger — hidden on desktop */
