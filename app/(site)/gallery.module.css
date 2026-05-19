@@ -40,6 +40,24 @@
   color: var(--color-nav-active);
 }
 
+@keyframes titleSlideUp {
+  from { transform: translateY(0.5em); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+
+@keyframes titleSlideDown {
+  from { transform: translateY(0);     opacity: 1; }
+  to   { transform: translateY(0.5em); opacity: 0; }
+}
+
+.titleEnter {
+  animation: titleSlideUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.titleExit {
+  animation: titleSlideDown 0.35s cubic-bezier(0.55, 0, 1, 0.45) both;
+}
+
 .description {
   margin-top: 8px;
   font-size: 13px;

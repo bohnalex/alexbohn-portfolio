@@ -47,11 +47,11 @@ export default function Nav({ visibleLinks }: Props) {
     }
 
     if (isGallery) {
-      const gridPadding = parseFloat(
-        getComputedStyle(document.documentElement).getPropertyValue('--grid-padding')
-      ) || 24
+      const nav = navRef.current
+      if (!nav) return
+      const navPaddingRight = parseFloat(getComputedStyle(nav).paddingRight || '0')
       const logoWidth = logoRef.current?.offsetWidth ?? 0
-      setLogoLeft(window.innerWidth - gridPadding - logoWidth)
+      setLogoLeft(window.innerWidth - navPaddingRight - logoWidth)
       setLogoReady(true)
       return
     }

@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getPortfolio, getPortfolios } from '@/sanity/lib/queries'
 import MasonryGrid from '@/components/MasonryGrid'
 import MobileGalleryGrid from '@/components/MobileGalleryGrid'
+import GalleryHeader from '@/components/GalleryHeader'
 import styles from '../../gallery.module.css'
 
 interface Props {
@@ -28,12 +28,7 @@ export default async function PortfolioPage({ params }: Props) {
 
   return (
     <section className={styles.page}>
-      <header className={styles.header}>
-        <Link href="/portfolios" className={styles.back} aria-label="Back to Portfolios">
-          ←
-        </Link>
-        <h1 className={styles.title}>{portfolio.title}</h1>
-      </header>
+      <GalleryHeader backHref="/portfolios" backLabel="Back to Portfolios" title={portfolio.title} />
       {portfolio.mobileLayout?.length ? (
         <>
           <div className={styles.desktopGrid}>

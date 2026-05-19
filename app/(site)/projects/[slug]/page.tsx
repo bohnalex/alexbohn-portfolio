@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getProject, getProjects } from '@/sanity/lib/queries'
 import MasonryGrid from '@/components/MasonryGrid'
 import ThreesGrid from '@/components/ThreesGrid'
 import MobileGalleryGrid from '@/components/MobileGalleryGrid'
 import SOBGrid from '@/components/SOBGrid'
+import GalleryHeader from '@/components/GalleryHeader'
 import styles from '../../gallery.module.css'
 
 interface Props {
@@ -33,12 +33,7 @@ export default async function ProjectPage({ params }: Props) {
 
   return (
     <section className={styles.page}>
-      <header className={styles.header}>
-        <Link href="/projects" className={styles.back} aria-label="Back to Projects">
-          ←
-        </Link>
-        <h1 className={styles.title}>{project.title}</h1>
-      </header>
+      <GalleryHeader backHref="/projects" backLabel="Back to Projects" title={project.title} />
       {project.description && (
         <p className={styles.description}>{project.description}</p>
       )}
