@@ -17,6 +17,11 @@ export const infoSchema = defineType({
       type: 'string',
     }),
     defineField({
+      name: 'phone',
+      title: 'Phone',
+      type: 'string',
+    }),
+    defineField({
       name: 'instagram',
       title: 'Instagram URL',
       type: 'url',

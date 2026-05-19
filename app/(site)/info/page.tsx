@@ -22,7 +22,14 @@ export default async function InfoPage() {
             {info?.email && (
               <p>
                 <a href={`mailto:${info.email}`} className={styles.contactLink}>
-                  {info.email}
+                  {info.email.toLowerCase()}
+                </a>
+              </p>
+            )}
+            {info?.phone && (
+              <p>
+                <a href={`tel:${info.phone}`} className={styles.contactLink}>
+                  {info.phone}
                 </a>
               </p>
             )}
@@ -32,7 +39,7 @@ export default async function InfoPage() {
                   href={info.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={styles.contactLink}
+                  className={`${styles.contactLink} ${styles.contactLinkRed}`}
                 >
                   Instagram
                 </a>

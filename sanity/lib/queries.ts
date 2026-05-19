@@ -86,6 +86,7 @@ export interface NavSettings {
 export interface Info {
   bio?: unknown[]
   email?: string
+  phone?: string
   instagram?: string
   representation?: string
   clientList?: unknown[]
@@ -225,7 +226,7 @@ export async function getNavSettings(): Promise<NavSettings> {
 export async function getInfo(): Promise<Info | null> {
   return client.fetch(
     groq`*[_type == "info" && _id == "singleton-info"][0] {
-      bio, email, instagram, representation, clientList
+      bio, email, phone, instagram, representation, clientList
     }`,
     {},
     { cache: 'no-store' }

@@ -41,12 +41,14 @@
   text-transform: uppercase;
   text-decoration: none;
   color: #111;
-  border-bottom: 1px solid currentColor;
-  padding-bottom: 1px;
 }
 
 .contactLink:hover {
   opacity: 0.5;
+}
+
+.contactLinkRed {
+  color: var(--color-nav-inactive);
 }
 
 .rep {
