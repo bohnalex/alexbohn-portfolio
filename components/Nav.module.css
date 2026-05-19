@@ -20,11 +20,10 @@
   text-transform: uppercase;
   text-decoration: none;
   color: #ffffff;
-  -webkit-text-stroke: 0;
-  transition: font-style 0.1s ease;
   white-space: nowrap;
   line-height: 1;
   letter-spacing: -0.02em;
+  font-style: italic;
 }
 
 .link:hover {
@@ -33,6 +32,7 @@
 
 .active {
   color: #ffffff;
+  font-style: normal;
 }
 
 /* Logo — floats above active/hovered nav link */
