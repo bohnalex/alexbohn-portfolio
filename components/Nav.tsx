@@ -7,6 +7,7 @@ import styles from './Nav.module.css'
 
 const MIN_FONT = 6
 const MAX_FONT = 300
+const GALLERY_ROUTE = /^\/(portfolios|selected-clients|projects)\/[^/]+/
 
 interface NavLink {
   href: string
@@ -27,6 +28,8 @@ export default function Nav({ visibleLinks }: Props) {
   const [logoLeft, setLogoLeft] = useState<number | null>(null)
   const [logoReady, setLogoReady] = useState(false)
 
+  const isGallery = GALLERY_ROUTE.test(pathname)
+
   const activeHref = (
     visibleLinks.find(({ href }) =>
       href === '/' ? pathname === '/' : pathname.startsWith(href)
@@ -35,7 +38,6 @@ export default function Nav({ visibleLinks }: Props) {
 
   const targetHref = hoveredHref ?? activeHref
 
-  // Keep a stable ref to the latest updater so fitNav/resize can call it without stale closures
   const logoUpdateRef = useRef<() => void>(() => {})
 
   const updateLogoPosition = useCallback(() => {
@@ -43,20 +45,38 @@ export default function Nav({ visibleLinks }: Props) {
       setLogoLeft(null)
       return
     }
+
+    if (isGallery) {
+      const gridPadding = parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue('--grid-padding')
+      ) || 24
+      const logoWidth = logoRef.current?.offsetWidth ?? 0
+      setLogoLeft(window.innerWidth - gridPadding - logoWidth)
+      setLogoReady(true)
+      return
+    }
+
     const el = targetHref ? linkRefs.current.get(targetHref) : null
     if (!el) return
     const rect = el.getBoundingClientRect()
     if (rect.width === 0) return
+
+    const logoWidth = logoRef.current?.offsetWidth ?? 0
     let left: number
     if (targetHref === '/') {
+      // Overview: left-justify
       left = rect.left
-    } else {
-      const logoWidth = logoRef.current?.offsetWidth ?? 0
+    } else if (targetHref === '/info') {
+      // Info: right-justify
       left = rect.right - logoWidth
+    } else {
+      // All others: center above the link
+      left = rect.left + rect.width / 2 - logoWidth / 2
     }
+
     setLogoLeft(left)
     setLogoReady(true)
-  }, [targetHref])
+  }, [targetHref, isGallery])
 
   logoUpdateRef.current = updateLogoPosition
 
@@ -137,7 +157,7 @@ export default function Nav({ visibleLinks }: Props) {
         className={styles.nav}
         onMouseLeave={() => setHoveredHref(null)}
       >
-        {visibleLinks.map(({ href, label }) => {
+        {!isGallery && visibleLinks.map(({ href, label }) => {
           const active = href === '/' ? pathname === '/' : pathname.startsWith(href)
           return (
             <Link
@@ -155,15 +175,18 @@ export default function Nav({ visibleLinks }: Props) {
             </Link>
           )
         })}
-        <button
-          className={styles.hamburger}
-          onClick={() => setMobileOpen((o) => !o)}
-          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={mobileOpen}
-        >
-          <span className={`${styles.hamburgerBar} ${mobileOpen ? styles.hamburgerBar1Open : ''}`} />
-          <span className={`${styles.hamburgerBar} ${mobileOpen ? styles.hamburgerBar2Open : ''}`} />
-        </button>
+
+        {!isGallery && (
+          <button
+            className={styles.hamburger}
+            onClick={() => setMobileOpen((o) => !o)}
+            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={mobileOpen}
+          >
+            <span className={`${styles.hamburgerBar} ${mobileOpen ? styles.hamburgerBar1Open : ''}`} />
+            <span className={`${styles.hamburgerBar} ${mobileOpen ? styles.hamburgerBar2Open : ''}`} />
+          </button>
+        )}
 
         <span
           ref={logoRef}
@@ -174,7 +197,7 @@ export default function Nav({ visibleLinks }: Props) {
         </span>
       </nav>
 
-      {mobileOpen && (
+      {!isGallery && mobileOpen && (
         <div className={styles.mobileOverlay}>
           {visibleLinks.map(({ href, label }) => {
             const active = href === '/' ? pathname === '/' : pathname.startsWith(href)

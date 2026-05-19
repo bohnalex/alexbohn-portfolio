@@ -1,10 +1,7 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
 import Nav from './Nav'
 import type { NavSettings } from '@/sanity/lib/queries'
-
-const GALLERY_ROUTE = /^\/(portfolios|selected-clients|projects)\/[^/]+/
 
 const ALL_LINKS = [
   { href: '/', label: 'Overview' },
@@ -20,9 +17,6 @@ interface Props {
 }
 
 export default function NavWrapper({ navSettings }: Props) {
-  const pathname = usePathname()
-  if (GALLERY_ROUTE.test(pathname)) return null
-
   const visibleLinks = ALL_LINKS.filter(
     (link) => !('key' in link) || navSettings[link.key] !== false
   )
