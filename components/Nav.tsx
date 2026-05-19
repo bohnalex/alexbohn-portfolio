@@ -171,7 +171,6 @@ export default function Nav({ visibleLinks }: Props) {
           style={logoLeft !== null ? { left: logoLeft } : undefined}
         >
           <Link href="/" className={styles.logoLink}>Alex Bohn</Link>
-          <span className={styles.logoSuffix}>&apos;s</span>
         </span>
       </nav>
 
