@@ -33,6 +33,42 @@
   color: var(--color-nav-active);
 }
 
+/* Logo — floats above active/hovered nav link */
+.logo {
+  position: absolute;
+  top: 0.625vw;
+  right: var(--grid-padding);
+  font-family: var(--font-display);
+  font-size: inherit;
+  text-transform: uppercase;
+  white-space: nowrap;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  pointer-events: none;
+  opacity: 0;
+  color: var(--color-nav-active);
+}
+
+.logoReady {
+  opacity: 1;
+  transition: right 0.15s ease, opacity 0.2s ease;
+}
+
+.logoLink {
+  color: var(--color-nav-active);
+  text-decoration: none;
+  pointer-events: all;
+  transition: color 0.15s ease;
+}
+
+.logoLink:hover {
+  color: var(--color-nav-inactive);
+}
+
+.logoSuffix {
+  pointer-events: none;
+}
+
 /* Hamburger — hidden on desktop */
 .hamburger {
   display: none;
@@ -104,5 +140,14 @@
 
   .hamburger {
     display: flex;
+  }
+
+  .logo,
+  .logoReady {
+    top: 1.25vw;
+    right: 24px;
+    font-size: 4.6vw;
+    opacity: 1;
+    transition: none;
   }
 }
