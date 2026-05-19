@@ -112,7 +112,13 @@
 
 @media (max-width: 900px) and (min-width: 769px) {
   .page {
-    padding: 0 24px;
+    padding: 28px 24px 0;
+  }
+
+  .titleBlend {
+    height: auto;
+    justify-content: flex-start;
+    padding-top: 4.5vw;
   }
 
   .title {
