@@ -13,12 +13,13 @@
   z-index: 100;
   font-size: 2.3vw;
   font-family: var(--font-display);
+  mix-blend-mode: difference;
 }
 
 .link {
   text-transform: uppercase;
   text-decoration: none;
-  color: var(--color-nav-inactive);
+  color: #ffffff;
   transition: color 0.15s ease;
   white-space: nowrap;
   line-height: 1;
@@ -26,11 +27,11 @@
 }
 
 .link:hover {
-  color: var(--color-nav-active);
+  color: #ffffff;
 }
 
 .active {
-  color: var(--color-nav-active);
+  color: #ffffff;
 }
 
 /* Logo — floats above active/hovered nav link */
@@ -45,7 +46,7 @@
   letter-spacing: -0.02em;
   pointer-events: none;
   opacity: 0;
-  color: var(--color-nav-active);
+  color: #ffffff;
 }
 
 .logoReady {
@@ -54,14 +55,14 @@
 }
 
 .logoLink {
-  color: var(--color-nav-active);
+  color: #ffffff;
   text-decoration: none;
   pointer-events: all;
   transition: color 0.15s ease;
 }
 
 .logoLink:hover {
-  color: var(--color-nav-inactive);
+  color: #ffffff;
 }
 
 /* Hamburger — hidden on desktop */
@@ -82,7 +83,7 @@
   display: block;
   width: 24px;
   height: 1.5px;
-  background: var(--color-nav-active);
+  background: #ffffff;
   transition: transform 0.2s ease, opacity 0.2s ease;
   transform-origin: center;
 }
@@ -106,6 +107,7 @@
   justify-content: center;
   align-items: center;
   gap: 32px;
+  isolation: isolate;
 }
 
 .mobileLink {
@@ -121,6 +123,7 @@
 .mobileLink:hover {
   color: var(--color-nav-active);
 }
+
 
 @media (max-width: 768px) {
   .nav {
