@@ -13,6 +13,7 @@ export default function GalleryLink({ href, className, children }: Props) {
     const nameEl = e.currentTarget.querySelector<HTMLElement>('p')
     if (nameEl) {
       sessionStorage.setItem('gallery-origin-y', String(nameEl.getBoundingClientRect().top))
+      sessionStorage.setItem('gallery-origin-size', getComputedStyle(nameEl).fontSize)
     }
   }
 
