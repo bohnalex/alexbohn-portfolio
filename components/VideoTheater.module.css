@@ -11,7 +11,7 @@
 .theater {
   position: relative;
   width: min(82vw, calc(82vh * 16 / 9));
-  aspect-ratio: 16 / 9;
+  height: min(calc(82vw * 9 / 16), 82vh);
 }
 
 .close {
