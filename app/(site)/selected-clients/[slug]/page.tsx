@@ -12,7 +12,7 @@ interface Props {
   params: { slug: string }
 }
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 60
 
 export async function generateStaticParams() {
   const clients = await getClientGalleries()
