@@ -15,6 +15,7 @@ interface ImageViewerProps {
 export default function ImageViewer({ images, initialIndex, onClose }: ImageViewerProps) {
   const [current, setCurrent] = useState(initialIndex)
   const [touchStartX, setTouchStartX] = useState<number | null>(null)
+  const [hoveredSide, setHoveredSide] = useState<'prev' | 'next' | null>(null)
 
   const prev = useCallback(
     () => setCurrent((i) => (i > 0 ? i - 1 : images.length - 1)),
@@ -109,13 +110,35 @@ export default function ImageViewer({ images, initialIndex, onClose }: ImageView
         onClick={prev}
         aria-label="Previous image"
         data-cursor="left"
+        onMouseEnter={() => setHoveredSide('prev')}
+        onMouseLeave={() => setHoveredSide(null)}
       />
       <button
         className={styles.nextZone}
         onClick={next}
         aria-label="Next image"
         data-cursor="right"
+        onMouseEnter={() => setHoveredSide('next')}
+        onMouseLeave={() => setHoveredSide(null)}
       />
+
+      {/* Visible navigation arrows */}
+      {images.length > 1 && (
+        <>
+          <span
+            className={`${styles.prevArrow} ${hoveredSide === 'prev' ? styles.prevArrowActive : ''}`}
+            aria-hidden="true"
+          >
+            ←
+          </span>
+          <span
+            className={`${styles.nextArrow} ${hoveredSide === 'next' ? styles.nextArrowActive : ''}`}
+            aria-hidden="true"
+          >
+            →
+          </span>
+        </>
+      )}
     </div>
   )
 }

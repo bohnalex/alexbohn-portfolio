@@ -21,6 +21,7 @@
   aspect-ratio: 3 / 4;
   overflow: hidden;
   background: #f5f5f5;
+  cursor: pointer;
 }
 
 .item:hover img {

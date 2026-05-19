@@ -19,6 +19,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 /* Image occupies the full overlay, inset slightly from top for the close button */
@@ -54,6 +55,7 @@
   background: transparent;
   border: none;
   z-index: 10;
+  cursor: pointer;
 }
 
 /* Right half — navigate to next */
@@ -66,4 +68,30 @@
   background: transparent;
   border: none;
   z-index: 10;
+  cursor: pointer;
+}
+
+/* Visible navigation arrows */
+.prevArrow,
+.nextArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  font-family: var(--font-display);
+  font-size: clamp(18px, 2.5vw, 40px);
+  color: #111;
+  pointer-events: none;
+  user-select: none;
+  line-height: 1;
+  opacity: 0.25;
+  transition: opacity 0.15s ease;
+}
+
+.prevArrow { left: var(--grid-padding); }
+.nextArrow { right: var(--grid-padding); }
+
+.prevArrowActive,
+.nextArrowActive {
+  opacity: 1;
 }

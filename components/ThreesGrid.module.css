@@ -19,5 +19,6 @@
   border: none;
   background: #e8e8e8;
   overflow: hidden;
+  cursor: pointer;
 }
 
