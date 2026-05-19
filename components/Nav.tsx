@@ -21,9 +21,10 @@ export default function Nav({ visibleLinks }: Props) {
   const pathname = usePathname()
   const navRef = useRef<HTMLElement>(null)
   const linkRefs = useRef<Map<string, HTMLAnchorElement>>(new Map())
+  const logoRef = useRef<HTMLSpanElement>(null)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [hoveredHref, setHoveredHref] = useState<string | null>(null)
-  const [logoRight, setLogoRight] = useState<number | null>(null)
+  const [logoLeft, setLogoLeft] = useState<number | null>(null)
   const [logoReady, setLogoReady] = useState(false)
 
   const activeHref = (
@@ -39,14 +40,21 @@ export default function Nav({ visibleLinks }: Props) {
 
   const updateLogoPosition = useCallback(() => {
     if (window.innerWidth <= 768) {
-      setLogoRight(null)
+      setLogoLeft(null)
       return
     }
     const el = targetHref ? linkRefs.current.get(targetHref) : null
     if (!el) return
     const rect = el.getBoundingClientRect()
     if (rect.width === 0) return
-    setLogoRight(window.innerWidth - rect.right)
+    let left: number
+    if (targetHref === '/') {
+      left = rect.left
+    } else {
+      const logoWidth = logoRef.current?.offsetWidth ?? 0
+      left = rect.right - logoWidth
+    }
+    setLogoLeft(left)
     setLogoReady(true)
   }, [targetHref])
 
@@ -158,8 +166,9 @@ export default function Nav({ visibleLinks }: Props) {
         </button>
 
         <span
+          ref={logoRef}
           className={`${styles.logo} ${logoReady ? styles.logoReady : ''}`}
-          style={logoRight !== null ? { right: logoRight } : undefined}
+          style={logoLeft !== null ? { left: logoLeft } : undefined}
         >
           <Link href="/" className={styles.logoLink}>Alex Bohn</Link>
           <span className={styles.logoSuffix}>&apos;s</span>
