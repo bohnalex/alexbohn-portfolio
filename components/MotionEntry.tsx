@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import SanityImage from './SanityImage'
+import VideoTheater from './VideoTheater'
 import type { SanityImageAsset } from '@/sanity/lib/queries'
 import styles from './MotionEntry.module.css'
 
@@ -17,24 +18,16 @@ function extractVimeoId(url: string): string | null {
 }
 
 export default function MotionEntry({ title, vimeoUrl, previewImage }: MotionEntryProps) {
-  const [playing, setPlaying] = useState(false)
+  const [theaterOpen, setTheaterOpen] = useState(false)
   const videoId = extractVimeoId(vimeoUrl)
 
   return (
-    <div className={styles.entry}>
-      <div className={styles.media}>
-        {playing && videoId ? (
-          <iframe
-            src={`https://player.vimeo.com/video/${videoId}?autoplay=1&color=ffffff&title=0&byline=0&portrait=0`}
-            frameBorder="0"
-            allow="autoplay; fullscreen; picture-in-picture"
-            allowFullScreen
-            className={styles.iframe}
-          />
-        ) : (
+    <>
+      <div className={styles.entry}>
+        <div className={styles.media}>
           <button
             className={styles.thumbnail}
-            onClick={() => setPlaying(true)}
+            onClick={() => setTheaterOpen(true)}
             aria-label={`Play ${title}`}
           >
             {previewImage.asset?.url?.toLowerCase().endsWith('.gif') ? (
@@ -63,9 +56,13 @@ export default function MotionEntry({ title, vimeoUrl, previewImage }: MotionEnt
               </svg>
             </div>
           </button>
-        )}
+        </div>
+        <p className={styles.title}>{title}</p>
       </div>
-      <p className={styles.title}>{title}</p>
-    </div>
+
+      {theaterOpen && videoId && (
+        <VideoTheater videoId={videoId} onClose={() => setTheaterOpen(false)} />
+      )}
+    </>
   )
 }
