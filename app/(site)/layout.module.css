@@ -45,7 +45,9 @@
 
 .mainListing {
   padding-top: var(--content-offset);
-  min-height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
+  overscroll-behavior: none;
 }
 
 .mainGallery {
