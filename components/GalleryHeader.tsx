@@ -17,8 +17,6 @@ interface Props {
 export default function GalleryHeader({ backHref, backLabel, title }: Props) {
   const router = useRouter()
   const titleRef = useRef<HTMLHeadingElement>(null)
-  const deltaRef = useRef<number>(0)
-  const scaleRef = useRef<number>(1)
   const [titleStyle, setTitleStyle] = useState<React.CSSProperties>({})
 
   useLayoutEffect(() => {
@@ -28,22 +26,18 @@ export default function GalleryHeader({ backHref, backLabel, title }: Props) {
 
     const titleY = titleRef.current.getBoundingClientRect().top
     const delta  = parseFloat(storedY) - titleY
-    deltaRef.current = delta
 
     let startScale = 1
     if (storedSize) {
       const currentSize = parseFloat(getComputedStyle(titleRef.current).fontSize)
       startScale = parseFloat(storedSize) / currentSize
     }
-    scaleRef.current = startScale
 
-    // Place at origin before first paint
     setTitleStyle({
       transform: `translateY(${delta}px) scale(${startScale})`,
       transformOrigin: 'left top',
     })
 
-    // Double rAF: ensure origin is painted before transition begins
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         setTitleStyle({
@@ -57,12 +51,12 @@ export default function GalleryHeader({ backHref, backLabel, title }: Props) {
 
   const handleBack = (e: React.MouseEvent) => {
     e.preventDefault()
-    setTitleStyle({
-      transform: `translateY(${deltaRef.current}px) scale(${scaleRef.current})`,
-      transformOrigin: 'left top',
-      transition: `transform ${DURATION}ms ${EASING}`,
-    })
-    setTimeout(() => router.push(backHref), DURATION)
+    if (titleRef.current) {
+      sessionStorage.setItem('gallery-returning-href', window.location.pathname)
+      sessionStorage.setItem('gallery-title-y',    String(titleRef.current.getBoundingClientRect().top))
+      sessionStorage.setItem('gallery-title-size', getComputedStyle(titleRef.current).fontSize)
+    }
+    router.push(backHref)
   }
 
   return (
