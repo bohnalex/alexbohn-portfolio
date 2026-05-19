@@ -20,21 +20,18 @@
 }
 
 .back {
-  display: inline-block;
+  display: block;
   text-decoration: none;
-  background: var(--color-nav-inactive);
-  color: #ffffff;
+  color: var(--color-nav-inactive);
   font-family: var(--font-display);
-  font-size: 2vw;
+  font-size: 2.9vw;
   line-height: 1;
   letter-spacing: -0.02em;
-  padding: 0.2em 0.5em 0.25em;
   pointer-events: all;
 }
 
 .back:hover {
-  background: var(--color-nav-active);
-  color: #ffffff;
+  color: var(--color-nav-active);
 }
 
 .title {
@@ -74,8 +71,9 @@
   }
 
   .back {
-    font-size: 5vw;
-    font-weight: 400;
+    font-size: 7vw;
+    font-weight: 900;
+    -webkit-text-stroke: 1px currentColor;
   }
 
   .title {
