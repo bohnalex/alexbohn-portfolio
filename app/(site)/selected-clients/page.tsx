@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { getClientGalleries } from '@/sanity/lib/queries'
 import SanityImage from '@/components/SanityImage'
+import Link from 'next/link'
+import GalleryLink from '@/components/GalleryLink'
 import listingStyles from '../listing.module.css'
 import styles from '../portfolios/portfolios.module.css'
 
@@ -24,7 +25,7 @@ export default async function SelectedClientsPage() {
       {clients.map((c) => (
         <div key={c._id}>
           <hr className={styles.rule} />
-          <Link href={`/selected-clients/${c.slug.current}`} className={styles.row}>
+          <GalleryLink href={`/selected-clients/${c.slug.current}`} className={styles.row}>
             <div className={styles.strip}>
               {c.thumbnails?.map((img, i) => (
                 <div key={img._key ?? i} className={styles.thumb}>
@@ -38,7 +39,7 @@ export default async function SelectedClientsPage() {
               ))}
             </div>
             <p className={styles.name}>{c.name}</p>
-          </Link>
+          </GalleryLink>
         </div>
       ))}
       <hr className={styles.rule} />
