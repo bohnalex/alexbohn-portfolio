@@ -1,7 +1,7 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  padding: var(--grid-padding);
+  padding: 0 var(--grid-padding) var(--grid-padding);
   gap: 12px;
 }
 
