@@ -29,6 +29,22 @@
   left: 0;
   right: 0;
   bottom: 72px;
+  overflow: hidden;
+}
+
+/* Sliding strip holding prev / current / next slides */
+.strip {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+/* One image slot within the strip */
+.slide {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
 }
 
 /* Image counter: centered below the image */

@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { urlFor } from '@/sanity/lib/image'
+import { sanityLoader } from '@/sanity/lib/imageLoader'
 import type { SanityImageAsset } from '@/sanity/lib/queries'
 import styles from './ImageViewer.module.css'
 
@@ -14,69 +15,142 @@ interface ImageViewerProps {
 
 export default function ImageViewer({ images, initialIndex, onClose }: ImageViewerProps) {
   const [current, setCurrent] = useState(initialIndex)
-  const [touchStartX, setTouchStartX] = useState<number | null>(null)
+  const [dragOffset, setDragOffset] = useState(0)
+  const [isAnimating, setIsAnimating] = useState(false)
+  const overlayRef = useRef<HTMLDivElement>(null)
+  const touchStartX = useRef<number | null>(null)
+  const touchStartY = useRef<number | null>(null)
+  const horizontalLocked = useRef(false)
 
-  const prev = useCallback(
-    () => setCurrent((i) => (i > 0 ? i - 1 : images.length - 1)),
-    [images.length]
-  )
-  const next = useCallback(
-    () => setCurrent((i) => (i < images.length - 1 ? i + 1 : 0)),
-    [images.length]
-  )
+  const n = images.length
+
+  const commitNext = useCallback(() => {
+    if (n <= 1) return
+    const w = overlayRef.current?.offsetWidth ?? window.innerWidth
+    setIsAnimating(true)
+    setDragOffset(-w)
+    setTimeout(() => {
+      setCurrent((i) => (i + 1) % n)
+      setDragOffset(0)
+      setIsAnimating(false)
+    }, 280)
+  }, [n])
+
+  const commitPrev = useCallback(() => {
+    if (n <= 1) return
+    const w = overlayRef.current?.offsetWidth ?? window.innerWidth
+    setIsAnimating(true)
+    setDragOffset(w)
+    setTimeout(() => {
+      setCurrent((i) => (i - 1 + n) % n)
+      setDragOffset(0)
+      setIsAnimating(false)
+    }, 280)
+  }, [n])
+
+  const snapBack = useCallback(() => {
+    setIsAnimating(true)
+    setDragOffset(0)
+    setTimeout(() => setIsAnimating(false), 280)
+  }, [])
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') prev()
-      else if (e.key === 'ArrowRight') next()
+      if (e.key === 'ArrowLeft') commitPrev()
+      else if (e.key === 'ArrowRight') commitNext()
       else if (e.key === 'Escape') onClose()
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [prev, next, onClose])
+  }, [commitPrev, commitNext, onClose])
 
-  // Preload adjacent images so navigation feels instant
   useEffect(() => {
-    if (images.length <= 1) return
-    const toPreload = [
-      images[(current + 1) % images.length],
-      images[(current - 1 + images.length) % images.length],
-    ]
-    toPreload.forEach((img) => {
+    if (n <= 1) return
+    ;[images[(current + 1) % n], images[(current - 1 + n) % n]].forEach((img) => {
       if (!img?.asset) return
-      const preloadImg = new window.Image()
-      preloadImg.src = urlFor(img).auto('format').quality(85).url()
+      const el = new window.Image()
+      el.src = urlFor(img).auto('format').width(1200).url()
     })
-  }, [current, images])
+  }, [current, images, n])
 
-  const img = images[current]
-  const src = urlFor(img).auto('format').quality(85).url()
-  const lqip = img.asset?.metadata?.lqip
-  const blurProps = lqip ? { placeholder: 'blur' as const, blurDataURL: lqip } : {}
+  // Non-passive touchmove so we can preventDefault on horizontal drags
+  useEffect(() => {
+    const el = overlayRef.current
+    if (!el) return
+    const onMove = (e: TouchEvent) => {
+      if (touchStartX.current === null) return
+      const dx = e.touches[0].clientX - touchStartX.current
+      const dy = e.touches[0].clientY - (touchStartY.current ?? e.touches[0].clientY)
+      if (!horizontalLocked.current) {
+        if (Math.abs(dx) > Math.abs(dy) + 3) {
+          horizontalLocked.current = true
+        } else if (Math.abs(dy) > Math.abs(dx) + 3) {
+          touchStartX.current = null
+          return
+        }
+      }
+      if (horizontalLocked.current) {
+        e.preventDefault()
+        setDragOffset(dx)
+      }
+    }
+    el.addEventListener('touchmove', onMove, { passive: false })
+    return () => el.removeEventListener('touchmove', onMove)
+  }, [])
 
   function handleTouchStart(e: React.TouchEvent) {
-    setTouchStartX(e.touches[0].clientX)
+    if (isAnimating) return
+    touchStartX.current = e.touches[0].clientX
+    touchStartY.current = e.touches[0].clientY
+    horizontalLocked.current = false
   }
 
   function handleTouchEnd(e: React.TouchEvent) {
-    if (touchStartX === null) return
-    const delta = e.changedTouches[0].clientX - touchStartX
-    if (Math.abs(delta) > 40) {
-      if (delta < 0) next()
-      else prev()
+    if (touchStartX.current === null || !horizontalLocked.current) {
+      touchStartX.current = null
+      touchStartY.current = null
+      return
     }
-    setTouchStartX(null)
+    const dx = e.changedTouches[0].clientX - touchStartX.current
+    touchStartX.current = null
+    touchStartY.current = null
+    const threshold = (overlayRef.current?.offsetWidth ?? window.innerWidth) * 0.25
+    if (dx < -threshold) commitNext()
+    else if (dx > threshold) commitPrev()
+    else snapBack()
+  }
+
+  function renderSlide(img: SanityImageAsset, leftOffset: string, priority: boolean) {
+    if (!img?.asset) return null
+    const src = urlFor(img).auto('format').fit('max').url()
+    const lqip = img.asset?.metadata?.lqip
+    const blurProps = lqip ? { placeholder: 'blur' as const, blurDataURL: lqip } : {}
+    return (
+      <div className={styles.slide} style={{ left: leftOffset }}>
+        <Image
+          loader={sanityLoader}
+          src={src}
+          alt={img.alt ?? ''}
+          fill
+          style={{ objectFit: 'contain' }}
+          sizes="100vw"
+          quality={85}
+          priority={priority}
+          {...blurProps}
+        />
+      </div>
+    )
   }
 
   return (
     <div
+      ref={overlayRef}
       className={styles.overlay}
       role="dialog"
       aria-modal="true"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Centered close button */}
       <button className={styles.closeBtn} onClick={onClose} aria-label="Close viewer">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
           <line x1="3" y1="3" x2="17" y2="17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -84,38 +158,26 @@ export default function ImageViewer({ images, initialIndex, onClose }: ImageView
         </svg>
       </button>
 
-      {/* Image fills the overlay, contained */}
       <div className={styles.imageWrap}>
-        <Image
-          key={src}
-          src={src}
-          alt={img.alt ?? ''}
-          fill
-          style={{ objectFit: 'contain' }}
-          sizes="100vw"
-          priority
-          {...blurProps}
-        />
+        <div
+          className={styles.strip}
+          style={{
+            transform: `translateX(${dragOffset}px)`,
+            transition: isAnimating ? 'transform 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'none',
+          }}
+        >
+          {n > 1 && renderSlide(images[(current - 1 + n) % n], '-100%', false)}
+          {renderSlide(images[current], '0%', true)}
+          {n > 1 && renderSlide(images[(current + 1) % n], '100%', false)}
+        </div>
       </div>
 
-      {/* Image counter */}
       <div className={styles.counter} aria-live="polite">
-        {current + 1}/{images.length}
+        {current + 1}/{n}
       </div>
 
-      {/* Click-zone halves — left = prev, right = next */}
-      <button
-        className={styles.prevZone}
-        onClick={prev}
-        aria-label="Previous image"
-        data-cursor="left"
-      />
-      <button
-        className={styles.nextZone}
-        onClick={next}
-        aria-label="Next image"
-        data-cursor="right"
-      />
+      <button className={styles.prevZone} onClick={commitPrev} aria-label="Previous image" />
+      <button className={styles.nextZone} onClick={commitNext} aria-label="Next image" />
     </div>
   )
 }
