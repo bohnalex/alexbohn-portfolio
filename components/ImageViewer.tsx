@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback, useEffect, useRef } from 'react'
+import { flushSync } from 'react-dom'
 import Image from 'next/image'
 import { urlFor } from '@/sanity/lib/image'
 import type { SanityImageAsset } from '@/sanity/lib/queries'
@@ -14,49 +15,57 @@ interface ImageViewerProps {
 
 export default function ImageViewer({ images, initialIndex, onClose }: ImageViewerProps) {
   const [current, setCurrent] = useState(initialIndex)
-  const [dragOffset, setDragOffset] = useState(0)
-  const [isAnimating, setIsAnimating] = useState(false)
   const overlayRef = useRef<HTMLDivElement>(null)
+  const stripRef = useRef<HTMLDivElement>(null)
   const touchStartX = useRef<number | null>(null)
   const touchStartY = useRef<number | null>(null)
   const horizontalLocked = useRef(false)
+  const isAnimating = useRef(false)
 
   const n = images.length
 
-  // Instant navigation — used by click zones and keyboard (desktop)
+  function setTransform(offset: number, animated: boolean) {
+    const el = stripRef.current
+    if (!el) return
+    el.style.transition = animated
+      ? 'transform 0.26s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+      : 'none'
+    el.style.transform = `translateX(${offset}px)`
+  }
+
+  // Instant navigation for desktop click / keyboard
   const goNext = useCallback(() => setCurrent((i) => (i + 1) % n), [n])
   const goPrev = useCallback(() => setCurrent((i) => (i - 1 + n) % n), [n])
 
-  // Animated navigation — used only by touch swipe (mobile)
-  const commitNext = useCallback(() => {
-    if (n <= 1) return
+  // Animated commit for touch swipe — flushSync ensures content update
+  // and transform reset happen in the same browser paint (no flash)
+  function animateCommit(direction: 'next' | 'prev') {
+    if (isAnimating.current || n <= 1) return
+    isAnimating.current = true
     const w = overlayRef.current?.offsetWidth ?? window.innerWidth
-    setIsAnimating(true)
-    setDragOffset(-w)
-    setTimeout(() => {
-      setCurrent((i) => (i + 1) % n)
-      setDragOffset(0)
-      setIsAnimating(false)
-    }, 280)
-  }, [n])
+    setTransform(direction === 'next' ? -w : w, true)
 
-  const commitPrev = useCallback(() => {
-    if (n <= 1) return
-    const w = overlayRef.current?.offsetWidth ?? window.innerWidth
-    setIsAnimating(true)
-    setDragOffset(w)
-    setTimeout(() => {
-      setCurrent((i) => (i - 1 + n) % n)
-      setDragOffset(0)
-      setIsAnimating(false)
-    }, 280)
-  }, [n])
+    let settled = false
+    const onEnd = () => {
+      if (settled) return
+      settled = true
+      if (!stripRef.current) return
+      flushSync(() => {
+        setCurrent((i) => (direction === 'next' ? (i + 1) % n : (i - 1 + n) % n))
+      })
+      setTransform(0, false)
+      isAnimating.current = false
+    }
+    stripRef.current?.addEventListener('transitionend', onEnd, { once: true })
+    setTimeout(onEnd, 350) // fallback if transitionend doesn't fire
+  }
 
-  const snapBack = useCallback(() => {
-    setIsAnimating(true)
-    setDragOffset(0)
-    setTimeout(() => setIsAnimating(false), 280)
-  }, [])
+  function snapBack() {
+    if (!isAnimating.current) isAnimating.current = true
+    setTransform(0, true)
+    stripRef.current?.addEventListener('transitionend', () => { isAnimating.current = false }, { once: true })
+    setTimeout(() => { isAnimating.current = false }, 350)
+  }
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -68,12 +77,12 @@ export default function ImageViewer({ images, initialIndex, onClose }: ImageView
     return () => window.removeEventListener('keydown', handler)
   }, [goPrev, goNext, onClose])
 
-  // Non-passive touchmove so we can preventDefault on horizontal drags
+  // Non-passive touchmove: update strip via direct DOM (no React re-renders during drag)
   useEffect(() => {
     const el = overlayRef.current
     if (!el) return
     const onMove = (e: TouchEvent) => {
-      if (touchStartX.current === null) return
+      if (touchStartX.current === null || isAnimating.current) return
       const dx = e.touches[0].clientX - touchStartX.current
       const dy = e.touches[0].clientY - (touchStartY.current ?? e.touches[0].clientY)
       if (!horizontalLocked.current) {
@@ -86,7 +95,7 @@ export default function ImageViewer({ images, initialIndex, onClose }: ImageView
       }
       if (horizontalLocked.current) {
         e.preventDefault()
-        setDragOffset(dx)
+        setTransform(dx, false)
       }
     }
     el.addEventListener('touchmove', onMove, { passive: false })
@@ -94,7 +103,7 @@ export default function ImageViewer({ images, initialIndex, onClose }: ImageView
   }, [])
 
   function handleTouchStart(e: React.TouchEvent) {
-    if (isAnimating) return
+    if (isAnimating.current) return
     touchStartX.current = e.touches[0].clientX
     touchStartY.current = e.touches[0].clientY
     horizontalLocked.current = false
@@ -110,8 +119,8 @@ export default function ImageViewer({ images, initialIndex, onClose }: ImageView
     touchStartX.current = null
     touchStartY.current = null
     const threshold = (overlayRef.current?.offsetWidth ?? window.innerWidth) * 0.25
-    if (dx < -threshold) commitNext()
-    else if (dx > threshold) commitPrev()
+    if (dx < -threshold) animateCommit('next')
+    else if (dx > threshold) animateCommit('prev')
     else snapBack()
   }
 
@@ -153,13 +162,7 @@ export default function ImageViewer({ images, initialIndex, onClose }: ImageView
       </button>
 
       <div className={styles.imageWrap}>
-        <div
-          className={styles.strip}
-          style={{
-            transform: `translateX(${dragOffset}px)`,
-            transition: isAnimating ? 'transform 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'none',
-          }}
-        >
+        <div ref={stripRef} className={styles.strip}>
           {n > 1 && renderSlide(images[(current - 1 + n) % n], '-100%')}
           {renderSlide(images[current], '0%')}
           {n > 1 && renderSlide(images[(current + 1) % n], '100%')}
