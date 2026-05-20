@@ -26,7 +26,7 @@ export default async function OverviewPage() {
           <OverviewGrid items={overview.images} />
         </div>
         <div className={styles.mobileGrid}>
-          <MobileGalleryGrid rows={overview.mobileLayout} loose />
+          <MobileGalleryGrid rows={overview.mobileLayout} loose peekFirst />
         </div>
       </>
     )

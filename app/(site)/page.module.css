@@ -56,5 +56,8 @@
     padding: 24px;
   }
   .desktopGrid { display: none; }
-  .mobileGrid { display: block; }
+  .mobileGrid {
+    display: block;
+    padding-bottom: 80px;
+  }
 }

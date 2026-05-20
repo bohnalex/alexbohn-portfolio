@@ -9,6 +9,7 @@ import styles from './MobileGalleryGrid.module.css'
 interface Props {
   rows: MobileRow[]
   loose?: boolean
+  peekFirst?: boolean
 }
 
 function getDimensions(img: SanityImageAsset): { width: number; height: number } | null {
@@ -21,7 +22,7 @@ function getDimensions(img: SanityImageAsset): { width: number; height: number }
   return null
 }
 
-export default function MobileGalleryGrid({ rows, loose }: Props) {
+export default function MobileGalleryGrid({ rows, loose, peekFirst }: Props) {
   const [viewerIndex, setViewerIndex] = useState<number | null>(null)
 
   const allImages = useMemo(() => rows.flatMap((r) => r.images), [rows])
@@ -39,7 +40,7 @@ export default function MobileGalleryGrid({ rows, loose }: Props) {
 
   return (
     <>
-      <div className={`${styles.grid}${loose ? ` ${styles.loose}` : ''}`}>
+      <div className={`${styles.grid}${loose ? ` ${styles.loose}` : ''}${peekFirst ? ` ${styles.peekFirst}` : ''}`}>
         {rowsIndexed.map((row) => {
           if (row.rowType === 'full') {
             const img = row.images[0]

@@ -8,6 +8,11 @@
   .loose {
     gap: 120px;
   }
+
+  /* Tighten only the gap between row 1 and row 2 so row 2 peeks below the fold */
+  .peekFirst > *:nth-child(2) {
+    margin-top: -80px;
+  }
 }
 
 .pair {

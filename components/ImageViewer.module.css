@@ -45,26 +45,26 @@
   white-space: nowrap;
 }
 
-/* Left half — navigate to previous */
+/* Left half — navigate to previous (bounded to image area) */
 .prevZone {
   position: absolute;
-  top: 0;
+  top: 72px;
+  bottom: 72px;
   left: 0;
   width: 50%;
-  height: 100%;
   background: transparent;
   border: none;
   z-index: 10;
   cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='18' viewBox='0 0 32 14'%3E%3Cpath d='M0 7L11 0L11 5.5L32 5.5L32 8.5L11 8.5L11 14Z' fill='%23cd3232'/%3E%3C/svg%3E") 0 9, auto;
 }
 
-/* Right half — navigate to next */
+/* Right half — navigate to next (bounded to image area) */
 .nextZone {
   position: absolute;
-  top: 0;
+  top: 72px;
+  bottom: 72px;
   right: 0;
   width: 50%;
-  height: 100%;
   background: transparent;
   border: none;
   z-index: 10;
