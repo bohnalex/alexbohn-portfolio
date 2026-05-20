@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { urlFor } from '@/sanity/lib/image'
+import { sanityLoader } from '@/sanity/lib/imageLoader'
 import type { SanityImageAsset } from '@/sanity/lib/queries'
 
 interface SanityImageProps {
@@ -33,18 +34,20 @@ export default function SanityImage({
 
   const src =
     cropWidth && cropHeight
-      ? urlFor(image).width(cropWidth).height(cropHeight).fit('crop').auto('format').quality(85).url()
-      : urlFor(image).auto('format').fit('max').quality(85).url()
+      ? urlFor(image).width(cropWidth).height(cropHeight).fit('crop').auto('format').url()
+      : urlFor(image).auto('format').fit('max').url()
   const lqip = image.asset?.metadata?.lqip
   const blurProps = lqip ? { placeholder: 'blur' as const, blurDataURL: lqip } : {}
 
   if (fill) {
     return (
       <Image
+        loader={sanityLoader}
         src={src}
         alt={image.alt ?? alt}
         fill
         sizes={sizes ?? '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'}
+        quality={85}
         className={className}
         style={{ objectFit: 'cover', objectPosition: 'center', ...style }}
         priority={priority}
@@ -58,11 +61,13 @@ export default function SanityImage({
 
   return (
     <Image
+      loader={sanityLoader}
       src={src}
       alt={image.alt ?? alt}
       width={w}
       height={h}
       sizes={sizes ?? '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'}
+      quality={85}
       className={className}
       style={{ width: '100%', height: 'auto', ...style }}
       priority={priority}
