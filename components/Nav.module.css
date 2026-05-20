@@ -148,6 +148,14 @@
   color: var(--color-nav-active);
 }
 
+@media (orientation: landscape) and (max-height: 500px) {
+  .mobileOverlay {
+    gap: 12px;
+  }
+  .mobileLink {
+    font-size: min(8vh, 6vw);
+  }
+}
 
 @media (max-width: 768px) {
   .nav {
