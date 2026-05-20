@@ -3,7 +3,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { urlFor } from '@/sanity/lib/image'
-import { sanityLoader } from '@/sanity/lib/imageLoader'
 import type { SanityImageAsset } from '@/sanity/lib/queries'
 import styles from './ImageViewer.module.css'
 
@@ -128,7 +127,6 @@ export default function ImageViewer({ images, initialIndex, onClose }: ImageView
     return (
       <div className={styles.slide} style={{ left: leftOffset }}>
         <Image
-          loader={sanityLoader}
           src={src}
           alt={img.alt ?? ''}
           fill

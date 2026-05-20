@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import { urlFor } from '@/sanity/lib/image'
-import { sanityLoader } from '@/sanity/lib/imageLoader'
 import type { SanityImageAsset } from '@/sanity/lib/queries'
 
 interface SanityImageProps {
@@ -42,7 +41,6 @@ export default function SanityImage({
   if (fill) {
     return (
       <Image
-        loader={sanityLoader}
         src={src}
         alt={image.alt ?? alt}
         fill
@@ -61,7 +59,6 @@ export default function SanityImage({
 
   return (
     <Image
-      loader={sanityLoader}
       src={src}
       alt={image.alt ?? alt}
       width={w}

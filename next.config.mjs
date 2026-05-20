@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const config = {
   images: {
+    loader: 'custom',
+    loaderFile: './sanity/lib/imageLoader.ts',
     remotePatterns: [
       {
         protocol: 'https',

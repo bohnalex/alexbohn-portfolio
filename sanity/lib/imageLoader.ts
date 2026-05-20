@@ -1,6 +1,4 @@
-import type { ImageLoaderProps } from 'next/image'
-
-export function sanityLoader({ src, width, quality }: ImageLoaderProps): string {
+export default function sanityLoader({ src, width, quality }: { src: string; width: number; quality?: number }): string {
   const url = new URL(src)
   const existingH = url.searchParams.get('h')
   if (existingH) {
