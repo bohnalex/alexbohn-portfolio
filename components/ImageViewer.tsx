@@ -23,6 +23,11 @@ export default function ImageViewer({ images, initialIndex, onClose }: ImageView
 
   const n = images.length
 
+  // Instant navigation — used by click zones and keyboard (desktop)
+  const goNext = useCallback(() => setCurrent((i) => (i + 1) % n), [n])
+  const goPrev = useCallback(() => setCurrent((i) => (i - 1 + n) % n), [n])
+
+  // Animated navigation — used only by touch swipe (mobile)
   const commitNext = useCallback(() => {
     if (n <= 1) return
     const w = overlayRef.current?.offsetWidth ?? window.innerWidth
@@ -55,22 +60,13 @@ export default function ImageViewer({ images, initialIndex, onClose }: ImageView
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') commitPrev()
-      else if (e.key === 'ArrowRight') commitNext()
+      if (e.key === 'ArrowLeft') goPrev()
+      else if (e.key === 'ArrowRight') goNext()
       else if (e.key === 'Escape') onClose()
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [commitPrev, commitNext, onClose])
-
-  useEffect(() => {
-    if (n <= 1) return
-    ;[images[(current + 1) % n], images[(current - 1 + n) % n]].forEach((img) => {
-      if (!img?.asset) return
-      const el = new window.Image()
-      el.src = urlFor(img).auto('format').width(1200).url()
-    })
-  }, [current, images, n])
+  }, [goPrev, goNext, onClose])
 
   // Non-passive touchmove so we can preventDefault on horizontal drags
   useEffect(() => {
@@ -119,7 +115,7 @@ export default function ImageViewer({ images, initialIndex, onClose }: ImageView
     else snapBack()
   }
 
-  function renderSlide(img: SanityImageAsset, leftOffset: string, priority: boolean) {
+  function renderSlide(img: SanityImageAsset, leftOffset: string) {
     if (!img?.asset) return null
     const src = urlFor(img).auto('format').fit('max').url()
     const lqip = img.asset?.metadata?.lqip
@@ -133,7 +129,7 @@ export default function ImageViewer({ images, initialIndex, onClose }: ImageView
           style={{ objectFit: 'contain' }}
           sizes="100vw"
           quality={85}
-          priority={priority}
+          priority
           {...blurProps}
         />
       </div>
@@ -164,9 +160,9 @@ export default function ImageViewer({ images, initialIndex, onClose }: ImageView
             transition: isAnimating ? 'transform 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'none',
           }}
         >
-          {n > 1 && renderSlide(images[(current - 1 + n) % n], '-100%', false)}
-          {renderSlide(images[current], '0%', true)}
-          {n > 1 && renderSlide(images[(current + 1) % n], '100%', false)}
+          {n > 1 && renderSlide(images[(current - 1 + n) % n], '-100%')}
+          {renderSlide(images[current], '0%')}
+          {n > 1 && renderSlide(images[(current + 1) % n], '100%')}
         </div>
       </div>
 
@@ -174,8 +170,8 @@ export default function ImageViewer({ images, initialIndex, onClose }: ImageView
         {current + 1}/{n}
       </div>
 
-      <button className={styles.prevZone} onClick={commitPrev} aria-label="Previous image" />
-      <button className={styles.nextZone} onClick={commitNext} aria-label="Next image" />
+      <button className={styles.prevZone} onClick={goPrev} aria-label="Previous image" />
+      <button className={styles.nextZone} onClick={goNext} aria-label="Next image" />
     </div>
   )
 }
