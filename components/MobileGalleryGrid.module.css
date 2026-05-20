@@ -28,6 +28,7 @@
   background: #f0f0f0;
   border: none;
   padding: 0;
+  cursor: pointer;
 }
 
 .fullCell {
@@ -38,4 +39,5 @@
   border: none;
   padding: 0;
   display: block;
+  cursor: pointer;
 }
