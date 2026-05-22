@@ -66,15 +66,15 @@ export default async function InfoPage() {
                   {info.additionalInfo}
                 </div>
               )}
+              <a
+                href="https://world.alexbohn.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.tripLink}
+              >
+                take a trip with me
+              </a>
             </div>
-            <a
-              href="https://world.alexbohn.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.tripLink}
-            >
-              take a trip with me
-            </a>
           </div>
         ) : null}
       </div>

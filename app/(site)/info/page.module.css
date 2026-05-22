@@ -80,7 +80,7 @@
 .rightColContent {
   display: flex;
   gap: 32px;
-  align-items: flex-start;
+  align-items: flex-end;
 }
 
 .clientList {
@@ -106,15 +106,12 @@
 }
 
 .tripLink {
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
+  margin-left: auto;
   font-size: 13px;
   letter-spacing: 0.03em;
   color: #333;
   text-decoration: none;
   white-space: nowrap;
-  margin-top: 16px;
 }
 
 .tripLink:hover {
