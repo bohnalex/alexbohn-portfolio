@@ -40,6 +40,12 @@ export const infoSchema = defineType({
       of: [{ type: 'block', styles: [{ title: 'Normal', value: 'normal' }], lists: [], marks: { decorators: [], annotations: [] } }],
       description: 'One client per line/block',
     }),
+    defineField({
+      name: 'additionalInfo',
+      title: 'Additional Info',
+      type: 'text',
+      description: 'Optional content for the right column',
+    }),
   ],
   preview: {
     prepare() {

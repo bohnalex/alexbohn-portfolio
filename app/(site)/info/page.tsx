@@ -57,8 +57,15 @@ export default async function InfoPage() {
         {info?.clientList?.length ? (
           <div className={styles.col}>
             <p className={styles.sectionLabel}>Select Clients</p>
-            <div className={styles.clientList}>
-              <PortableTextClient value={info.clientList as unknown[]} />
+            <div className={styles.rightColContent}>
+              <div className={styles.clientList}>
+                <PortableTextClient value={info.clientList as unknown[]} />
+              </div>
+              {info?.additionalInfo && (
+                <div className={styles.additionalInfo}>
+                  {info.additionalInfo}
+                </div>
+              )}
             </div>
             <a
               href="https://world.alexbohn.com"

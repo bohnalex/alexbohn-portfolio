@@ -77,6 +77,12 @@
   margin-bottom: 16px;
 }
 
+.rightColContent {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
 .clientList {
   display: flex;
   flex-direction: column;
@@ -88,6 +94,15 @@
   letter-spacing: 0.03em;
   color: #333;
   line-height: 1.8;
+}
+
+.additionalInfo {
+  flex: 1;
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  color: #333;
+  line-height: 1.8;
+  white-space: pre-wrap;
 }
 
 .tripLink {
