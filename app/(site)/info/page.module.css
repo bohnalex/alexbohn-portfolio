@@ -118,6 +118,7 @@
   right: var(--grid-padding);
   z-index: 50;
   pointer-events: auto;
+  font-family: 'Courier New', monospace;
 }
 
 .tripLink:hover {
