@@ -91,6 +91,7 @@ export interface Info {
   representation?: string
   clientList?: unknown[]
   additionalInfo?: string
+  rightColumnText?: string
 }
 
 // ─── Queries ─────────────────────────────────────────────────────────────────
@@ -227,7 +228,7 @@ export async function getNavSettings(): Promise<NavSettings> {
 export async function getInfo(): Promise<Info | null> {
   return client.fetch(
     groq`*[_type == "info" && _id == "singleton-info"][0] {
-      bio, email, phone, instagram, representation, clientList, additionalInfo
+      bio, email, phone, instagram, representation, clientList, additionalInfo, rightColumnText
     }`,
     {},
     { next: { revalidate: 60 } }

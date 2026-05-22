@@ -46,6 +46,12 @@ export const infoSchema = defineType({
       type: 'text',
       description: 'Optional content for the right column',
     }),
+    defineField({
+      name: 'rightColumnText',
+      title: 'Right Column Text',
+      type: 'text',
+      description: 'Additional text box on the far right of the info page',
+    }),
   ],
   preview: {
     prepare() {
