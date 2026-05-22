@@ -46,6 +46,8 @@ export default function SanityImage({
     onDragStart: (e: React.DragEvent) => e.preventDefault(),
   }
 
+  const iosSave: React.CSSProperties = { WebkitTouchCallout: 'none', userSelect: 'none' }
+
   if (fill) {
     return (
       <>
@@ -56,12 +58,16 @@ export default function SanityImage({
           sizes={sizes ?? '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'}
           quality={85}
           className={className}
-          style={{ objectFit: 'cover', objectPosition: 'center', ...style }}
+          style={{ objectFit: 'cover', objectPosition: 'center', ...iosSave, ...style }}
           priority={priority}
           {...noSave}
           {...blurProps}
         />
-        <div aria-hidden="true" style={{ position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none' }} />
+        <div
+          aria-hidden="true"
+          style={{ position: 'absolute', inset: 0, zIndex: 1 }}
+          onContextMenu={(e) => e.preventDefault()}
+        />
       </>
     )
   }
@@ -78,7 +84,7 @@ export default function SanityImage({
       sizes={sizes ?? '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'}
       quality={85}
       className={className}
-      style={{ width: '100%', height: 'auto', ...style }}
+      style={{ width: '100%', height: 'auto', ...iosSave, ...style }}
       priority={priority}
       {...noSave}
       {...blurProps}

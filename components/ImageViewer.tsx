@@ -141,14 +141,18 @@ export default function ImageViewer({ images, initialIndex, onClose }: ImageView
           src={src}
           alt={img.alt ?? ''}
           fill
-          style={{ objectFit: 'contain' }}
+          style={{ objectFit: 'contain', WebkitTouchCallout: 'none', userSelect: 'none' }}
           sizes="100vw"
           quality={85}
           priority
           {...noSave}
           {...blurProps}
         />
-        <div aria-hidden="true" style={{ position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none' }} />
+        <div
+          aria-hidden="true"
+          style={{ position: 'absolute', inset: 0, zIndex: 1 }}
+          onContextMenu={(e) => e.preventDefault()}
+        />
       </div>
     )
   }
