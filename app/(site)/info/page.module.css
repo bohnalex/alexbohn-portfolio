@@ -106,8 +106,8 @@
 }
 
 .tripLink {
-  display: block;
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
   font-size: 13px;
   letter-spacing: 0.03em;
   color: #333;
