@@ -78,11 +78,10 @@
 }
 
 .clientListContainer {
+  position: relative;
   display: flex;
-  justify-content: space-between;
   align-items: flex-end;
   gap: 16px;
-  margin-right: calc(-1 * (var(--grid-padding) + 40px));
 }
 
 .clientList {
@@ -100,13 +99,14 @@
 }
 
 .tripLink {
+  position: absolute;
+  right: calc(-100vw + 100% + var(--grid-padding));
+  bottom: 0;
   font-size: 13px;
   letter-spacing: 0.03em;
   color: #333;
   text-decoration: none;
   white-space: nowrap;
-  padding-right: calc(var(--grid-padding) + 40px);
-  text-align: right;
 }
 
 .tripLink:hover {
