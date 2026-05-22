@@ -98,8 +98,8 @@
 
 .tripLink {
   margin-left: auto;
-  margin-right: calc(-1 * (var(--grid-padding) + 40px));
-  padding-right: calc(var(--grid-padding) + 40px);
+  margin-right: calc(-100vw + 100% + var(--grid-padding));
+  padding-right: var(--grid-padding);
   font-size: 13px;
   letter-spacing: 0.03em;
   color: #333;
