@@ -57,8 +57,18 @@ export default async function InfoPage() {
         {info?.clientList?.length ? (
           <div className={styles.col}>
             <p className={styles.sectionLabel}>Select Clients</p>
-            <div className={styles.clientList}>
-              <PortableTextClient value={info.clientList as unknown[]} />
+            <div className={styles.clientListContainer}>
+              <div className={styles.clientList}>
+                <PortableTextClient value={info.clientList as unknown[]} />
+              </div>
+              <a
+                href="https://world.alexbohn.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.tripLink}
+              >
+                take a trip with me
+              </a>
             </div>
           </div>
         ) : null}
