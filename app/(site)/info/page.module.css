@@ -78,7 +78,6 @@
 }
 
 .clientListContainer {
-  position: relative;
   display: flex;
   align-items: flex-end;
   gap: 16px;
@@ -88,7 +87,6 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  flex: 1;
 }
 
 .clientList p {
@@ -99,9 +97,9 @@
 }
 
 .tripLink {
-  position: absolute;
-  right: calc(-100vw + 100% + var(--grid-padding));
-  bottom: 0;
+  margin-left: auto;
+  margin-right: calc(-1 * (var(--grid-padding) + 40px));
+  padding-right: calc(var(--grid-padding) + 40px);
   font-size: 13px;
   letter-spacing: 0.03em;
   color: #333;
