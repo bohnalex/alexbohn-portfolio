@@ -124,6 +124,12 @@ export default function ImageViewer({ images, initialIndex, onClose }: ImageView
     else snapBack()
   }
 
+  const noSave = {
+    draggable: false,
+    onContextMenu: (e: React.MouseEvent) => e.preventDefault(),
+    onDragStart: (e: React.DragEvent) => e.preventDefault(),
+  }
+
   function renderSlide(img: SanityImageAsset, leftOffset: string) {
     if (!img?.asset) return null
     const src = urlFor(img).auto('format').fit('max').url()
@@ -139,8 +145,10 @@ export default function ImageViewer({ images, initialIndex, onClose }: ImageView
           sizes="100vw"
           quality={85}
           priority
+          {...noSave}
           {...blurProps}
         />
+        <div aria-hidden="true" style={{ position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none' }} />
       </div>
     )
   }
@@ -153,6 +161,7 @@ export default function ImageViewer({ images, initialIndex, onClose }: ImageView
       aria-modal="true"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
+      onContextMenu={(e) => e.preventDefault()}
     >
       <button className={styles.closeBtn} onClick={onClose} aria-label="Close viewer">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">

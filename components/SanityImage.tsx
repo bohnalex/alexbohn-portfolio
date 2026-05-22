@@ -38,19 +38,29 @@ export default function SanityImage({
   const lqip = image.asset?.metadata?.lqip
   const blurProps = lqip ? { placeholder: 'blur' as const, blurDataURL: lqip } : {}
 
+  const noSave = {
+    draggable: false,
+    onContextMenu: (e: React.MouseEvent) => e.preventDefault(),
+    onDragStart: (e: React.DragEvent) => e.preventDefault(),
+  }
+
   if (fill) {
     return (
-      <Image
-        src={src}
-        alt={image.alt ?? alt}
-        fill
-        sizes={sizes ?? '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'}
-        quality={85}
-        className={className}
-        style={{ objectFit: 'cover', objectPosition: 'center', ...style }}
-        priority={priority}
-        {...blurProps}
-      />
+      <>
+        <Image
+          src={src}
+          alt={image.alt ?? alt}
+          fill
+          sizes={sizes ?? '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'}
+          quality={85}
+          className={className}
+          style={{ objectFit: 'cover', objectPosition: 'center', ...style }}
+          priority={priority}
+          {...noSave}
+          {...blurProps}
+        />
+        <div aria-hidden="true" style={{ position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none' }} />
+      </>
     )
   }
 
@@ -68,6 +78,7 @@ export default function SanityImage({
       className={className}
       style={{ width: '100%', height: 'auto', ...style }}
       priority={priority}
+      {...noSave}
       {...blurProps}
     />
   )
