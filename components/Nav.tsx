@@ -159,7 +159,10 @@ export default function Nav({ visibleLinks }: Props) {
       <nav
         ref={navRef}
         className={styles.nav}
-        onMouseLeave={() => setHoveredHref(null)}
+        onMouseLeave={(e) => {
+          if (logoRef.current?.contains(e.relatedTarget as Node)) return
+          setHoveredHref(null)
+        }}
       >
         {!isGallery && visibleLinks.map(({ href, label }) => {
           const active = href === '/' ? pathname === '/' : pathname.startsWith(href)
@@ -219,7 +222,15 @@ export default function Nav({ visibleLinks }: Props) {
           className={`${styles.logo} ${logoReady ? styles.logoReady : ''}`}
           style={logoLeft !== null ? { left: logoLeft } : undefined}
         >
-          <Link href="/" className={styles.logoLink} style={{ pointerEvents: 'all' }}>Alex Bohn</Link>
+          <Link
+            href="/"
+            className={styles.logoLink}
+            style={{ pointerEvents: 'all' }}
+            onMouseLeave={(e) => {
+              if (navRef.current?.contains(e.relatedTarget as Node)) return
+              setHoveredHref(null)
+            }}
+          >Alex Bohn</Link>
         </span>
       </nav>
 
