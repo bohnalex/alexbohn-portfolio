@@ -227,7 +227,11 @@ export default function Nav({ visibleLinks }: Props) {
             className={styles.logoLink}
             style={{ pointerEvents: 'all' }}
             onMouseLeave={(e) => {
-              if (navRef.current?.contains(e.relatedTarget as Node)) return
+              const rt = e.relatedTarget as Node | null
+              const goingToNavLink = [...linkRefs.current.values()].some(
+                el => el === rt || el.contains(rt)
+              )
+              if (goingToNavLink) return
               setHoveredHref(null)
             }}
           >Alex Bohn</Link>
