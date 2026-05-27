@@ -228,7 +228,7 @@ export default function Nav({ visibleLinks }: Props) {
             style={{ pointerEvents: 'all' }}
             onMouseLeave={(e) => {
               const rt = e.relatedTarget as Node | null
-              const goingToNavLink = [...linkRefs.current.values()].some(
+              const goingToNavLink = Array.from(linkRefs.current.values()).some(
                 el => el === rt || el.contains(rt)
               )
               if (goingToNavLink) return
