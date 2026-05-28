@@ -84,7 +84,7 @@ export default async function InfoPage() {
         rel="noopener noreferrer"
         className={styles.tripLink}
       >
-        psst - take a trip with me...
+        psst - take a trip with me
       </a>
     </>
   )
