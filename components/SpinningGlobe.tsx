@@ -27,7 +27,7 @@ export default function SpinningGlobe() {
       )
     }
 
-    const mat = new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.35 })
+    const mat = new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.75 })
     const globe = new THREE.Group()
 
     for (let lat = -60; lat <= 60; lat += 30) {
