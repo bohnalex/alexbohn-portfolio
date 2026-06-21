@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import PortableTextClient from '@/components/PortableTextClient'
+import TripLink from '@/components/TripLink'
 import { getInfo } from '@/sanity/lib/queries'
 import styles from './page.module.css'
 
@@ -53,6 +54,8 @@ export default async function InfoPage() {
                 </div>
               )}
             </div>
+
+            <TripLink />
           </div>
 
           {info?.clientList?.length ? (
@@ -78,14 +81,6 @@ export default async function InfoPage() {
         </div>
       </section>
 
-      <a
-        href="https://world.alexbohn.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        className={styles.tripLink}
-      >
-        psst - take a trip with me
-      </a>
     </>
   )
 }

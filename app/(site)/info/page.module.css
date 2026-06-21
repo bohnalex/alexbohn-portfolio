@@ -107,24 +107,6 @@
   min-width: 100px;
 }
 
-.tripLink {
-  font-size: 13px;
-  letter-spacing: 0.03em;
-  color: #333;
-  text-decoration: none;
-  white-space: nowrap;
-  position: fixed;
-  bottom: 150px;
-  right: var(--grid-padding);
-  z-index: 50;
-  pointer-events: auto;
-  font-family: 'Courier New', monospace;
-}
-
-.tripLink:hover {
-  opacity: 0.5;
-}
-
 .rightColumnText {
   font-size: 13px;
   letter-spacing: 0.03em;

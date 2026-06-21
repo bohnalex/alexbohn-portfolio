@@ -1,0 +1,19 @@
+.link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #333;
+  margin-top: auto;
+}
+
+.link:hover {
+  opacity: 0.5;
+}
+
+.label {
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  font-family: 'Courier New', monospace;
+  white-space: nowrap;
+}
