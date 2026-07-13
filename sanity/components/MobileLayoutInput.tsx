@@ -242,6 +242,14 @@ export function MobileLayoutInput(props: ArrayOfObjectsInputProps) {
     props.onChange(unset([{ _key: key }]))
   }
 
+  function toggleRowType(index: number, e: React.MouseEvent) {
+    e.stopPropagation()
+    const next: MobileRow[] = rows.map(row => ({ ...row, images: [...(row.images ?? [])] }))
+    const currentType = next[index].rowType
+    next[index].rowType = currentType === 'full' ? 'pair' : 'full'
+    props.onChange(set(next))
+  }
+
   // ─── Shared cell style builder ────────────────────────────────────────────
 
   function cellStyle(isDragSrc: boolean, isDropTarget: boolean, extraAspectRatio: string): React.CSSProperties {
@@ -352,6 +360,20 @@ export function MobileLayoutInput(props: ArrayOfObjectsInputProps) {
                   })()
                 )}
               </div>
+
+              {/* Toggle row type */}
+              <button
+                type="button"
+                onClick={(e) => toggleRowType(rIdx, e)}
+                title={isPair ? 'Switch to full width' : 'Switch to two columns'}
+                style={{
+                  width: 28, flexShrink: 0,
+                  background: '#fafafa', border: 'none', borderLeft: '1px solid #ebebeb',
+                  cursor: 'pointer', color: '#666', fontSize: 11, lineHeight: 1,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0,
+                  fontWeight: 500,
+                }}
+              >{isPair ? '⇥' : '⊞'}</button>
 
               {/* Remove */}
               <button
