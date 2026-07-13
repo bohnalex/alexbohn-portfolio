@@ -37,6 +37,37 @@ export function MobileLayoutInput(props: ArrayOfObjectsInputProps) {
   // All images in the parent gallery document
   const galleryImages = (useFormValue(['images']) ?? []) as unknown[]
 
+  // Auto-create mobile rows for new images
+  useEffect(() => {
+    if (galleryImages.length === 0) return
+
+    const usedRefs = new Set<string>()
+    rows.forEach(row => {
+      row.images?.forEach(img => {
+        const ref = img?.asset?._ref
+        if (ref) usedRefs.add(ref)
+      })
+    })
+
+    const newImages: Array<{ ref: string; sourceItem: unknown }> = []
+    galleryImages.forEach(item => {
+      const ref = extractAssetRef(item)
+      if (ref && !usedRefs.has(ref)) {
+        newImages.push({ ref, sourceItem: item })
+      }
+    })
+
+    if (newImages.length > 0) {
+      const newRows: MobileRow[] = newImages.map(({ ref }) => ({
+        _type: 'mobileRow',
+        _key: uid(),
+        rowType: 'pair' as const,
+        images: [{ _type: 'image', _key: uid(), asset: { _type: 'reference' as const, _ref: ref } }],
+      }))
+      props.onChange(set([...rows, ...newRows]))
+    }
+  }, [galleryImages.length])
+
   // ─── Smooth auto-scroll ───────────────────────────────────────────────────
   const rafRef      = useRef<number | null>(null)
   const dragClientY = useRef(0)
