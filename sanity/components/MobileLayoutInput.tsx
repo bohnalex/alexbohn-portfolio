@@ -37,9 +37,14 @@ export function MobileLayoutInput(props: ArrayOfObjectsInputProps) {
   // All images in the parent gallery document
   const galleryImages = (useFormValue(['images']) ?? []) as unknown[]
 
-  // Auto-create mobile rows for new images
+  const [showAutoGenerate, setShowAutoGenerate] = useState(false)
+
+  // Check if there are unused images that could be auto-generated
   useEffect(() => {
-    if (galleryImages.length === 0) return
+    if (galleryImages.length === 0) {
+      setShowAutoGenerate(false)
+      return
+    }
 
     const usedRefs = new Set<string>()
     rows.forEach(row => {
@@ -49,24 +54,41 @@ export function MobileLayoutInput(props: ArrayOfObjectsInputProps) {
       })
     })
 
-    const newImages: Array<{ ref: string; sourceItem: unknown }> = []
+    const hasUnusedImages = galleryImages.some(item => {
+      const ref = extractAssetRef(item)
+      return ref && !usedRefs.has(ref)
+    })
+
+    setShowAutoGenerate(hasUnusedImages)
+  }, [galleryImages.length, rows.length])
+
+  function autoGenerateMissingRows() {
+    const usedRefs = new Set<string>()
+    rows.forEach(row => {
+      row.images?.forEach(img => {
+        const ref = img?.asset?._ref
+        if (ref) usedRefs.add(ref)
+      })
+    })
+
+    const newRows: MobileRow[] = []
     galleryImages.forEach(item => {
       const ref = extractAssetRef(item)
       if (ref && !usedRefs.has(ref)) {
-        newImages.push({ ref, sourceItem: item })
+        newRows.push({
+          _type: 'mobileRow',
+          _key: uid(),
+          rowType: 'pair' as const,
+          images: [{ _type: 'image', _key: uid(), asset: { _type: 'reference' as const, _ref: ref } }],
+        })
       }
     })
 
-    if (newImages.length > 0) {
-      const newRows: MobileRow[] = newImages.map(({ ref }) => ({
-        _type: 'mobileRow',
-        _key: uid(),
-        rowType: 'pair' as const,
-        images: [{ _type: 'image', _key: uid(), asset: { _type: 'reference' as const, _ref: ref } }],
-      }))
+    if (newRows.length > 0) {
       props.onChange(set([...rows, ...newRows]))
+      setShowAutoGenerate(false)
     }
-  }, [galleryImages.length])
+  }
 
   // ─── Smooth auto-scroll ───────────────────────────────────────────────────
   const rafRef      = useRef<number | null>(null)
@@ -348,7 +370,13 @@ export function MobileLayoutInput(props: ArrayOfObjectsInputProps) {
         })}
       </div>
 
-      <div style={{ display: 'flex', gap: 8, marginTop: rows.length ? 14 : 4 }}>
+      <div style={{ display: 'flex', gap: 8, marginTop: rows.length ? 14 : 4, flexWrap: 'wrap', alignItems: 'center' }}>
+        {showAutoGenerate && (
+          <button type="button" onClick={autoGenerateMissingRows}
+            style={{ padding: '6px 14px', background: '#2276fc', color: '#fff', border: 'none', borderRadius: 3, cursor: 'pointer', fontSize: 13, fontFamily: 'inherit', fontWeight: 500 }}>
+            Auto-generate rows for new images
+          </button>
+        )}
         <button type="button" onClick={() => addRow('pair')}
           style={{ padding: '6px 14px', background: '#111', color: '#fff', border: 'none', borderRadius: 3, cursor: 'pointer', fontSize: 13, fontFamily: 'inherit' }}>
           + Add Pair
