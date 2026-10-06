@@ -90,6 +90,7 @@ export interface Info {
   instagram?: string
   representation?: string
   clientList?: unknown[]
+  clients?: { _key?: string; name: string; image?: SanityImageAsset }[]
   additionalInfo?: string
   rightColumnText?: string
 }
@@ -228,7 +229,9 @@ export async function getNavSettings(): Promise<NavSettings> {
 export async function getInfo(): Promise<Info | null> {
   return client.fetch(
     groq`*[_type == "info" && _id == "singleton-info"][0] {
-      bio, email, phone, instagram, representation, clientList, additionalInfo, rightColumnText
+      bio, email, phone, instagram, representation, clientList,
+      clients[] { _key, name, image { ${IMAGE_FIELDS} } },
+      additionalInfo, rightColumnText
     }`,
     {},
     { next: { revalidate: 60 } }

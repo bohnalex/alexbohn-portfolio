@@ -11,6 +11,11 @@
   opacity: 0.5;
 }
 
+/* Colored variant: color handled inline, no fade on hover */
+.colored:hover {
+  opacity: 1;
+}
+
 .label {
   font-size: 13px;
   letter-spacing: 0.03em;

@@ -38,7 +38,24 @@ export const infoSchema = defineType({
       title: 'Client List',
       type: 'array',
       of: [{ type: 'block', styles: [{ title: 'Normal', value: 'normal' }], lists: [], marks: { decorators: [], annotations: [] } }],
-      description: 'One client per line/block',
+      description: 'One client per line/block (used when the Clients list below is empty)',
+    }),
+    defineField({
+      name: 'clients',
+      title: 'Clients (with hover images)',
+      type: 'array',
+      description: 'Optional. Each client can have an image that pops up on hover. When filled, this replaces the plain Client List above.',
+      of: [
+        {
+          type: 'object',
+          name: 'client',
+          fields: [
+            defineField({ name: 'name', title: 'Name', type: 'string', validation: (r) => r.required() }),
+            defineField({ name: 'image', title: 'Hover image', type: 'image', options: { hotspot: true } }),
+          ],
+          preview: { select: { title: 'name', media: 'image' } },
+        },
+      ],
     }),
     defineField({
       name: 'additionalInfo',

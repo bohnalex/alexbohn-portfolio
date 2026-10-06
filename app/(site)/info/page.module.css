@@ -1,127 +1,165 @@
 .page {
-  padding: 48px var(--grid-padding) 48px calc(var(--grid-padding) + 40px);
-  max-width: 960px;
-}
-
-.cols {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
-}
-
-.col {
   display: flex;
-  flex-direction: column;
-  gap: 32px;
-  position: relative;
-}
-
-.bio {
-  font-size: 14px;
-  line-height: 1.75;
-  color: #222;
-}
-
-.bio p {
-  margin-bottom: 1em;
-}
-
-.bio p:last-child {
-  margin-bottom: 0;
-}
-
-.contact {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.contactLink {
-  font-size: 12px;
-  letter-spacing: 0.06em;
-  text-decoration: none;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 48px 40px;
+  padding: 72px var(--grid-padding) 96px;
+  font-family: var(--font-archivo), sans-serif;
   color: #111;
 }
 
-.contactLink:hover {
-  opacity: 0.5;
+/* ── Left column ─────────────────────────────────────────── */
+
+.side {
+  flex: 1 1 320px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
 }
 
-.contactLinkRed {
-  color: var(--color-nav-inactive);
-}
-
-.rep {
-  margin-top: 8px;
-}
-
-.repLabel {
-  font-size: 10px;
-  letter-spacing: 0.12em;
+.label {
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #999;
-  margin-bottom: 4px;
+  border-top: 4px solid #111;
+  padding-top: 12px;
+}
+
+.bio {
+  margin-top: 20px;
+  font-weight: 700;
+  font-stretch: 80%;
+  font-size: clamp(26px, 2.6vw, 40px);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.bio p + p {
+  margin-top: 0;
+}
+
+.contact {
+  border-top: 1px solid #111;
+}
+
+.contactRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #111;
+}
+
+.contactKey {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  flex: none;
+}
+
+.contactLink {
+  font-weight: 700;
+  font-stretch: 80%;
+  font-size: 17px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-nav-inactive);
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.contactLink:hover {
+  color: #32cdcd;
 }
 
 .repText {
-  font-size: 13px;
-  line-height: 1.6;
-  color: #333;
+  font-size: 14px;
+  line-height: 1.4;
+  text-align: right;
   white-space: pre-line;
 }
 
-.sectionLabel {
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #999;
-  margin-bottom: 16px;
+.previewSlot {
+  display: none;
+  width: 200px;
+  height: 250px;
 }
 
-.rightColContent {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.preview {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #eee;
+  overflow: hidden;
+}
+
+.trip {
+  margin-top: 0;
+}
+
+/* ── Client list ─────────────────────────────────────────── */
+
+.main {
+  flex: 2 1 520px;
+  min-width: 0;
 }
 
 .clientList {
+  list-style: none;
+  margin-top: 20px;
+  border-top: 1px solid #111;
+}
+
+.clientRow {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  border-bottom: 1px solid #111;
+  font-weight: 700;
+  font-stretch: 80%;
+  font-size: clamp(20px, 2vw, 30px);
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  line-height: 1.15;
 }
 
-.clientList p {
-  font-size: 13px;
-  letter-spacing: 0.03em;
-  color: #333;
-  line-height: 1.8;
-  white-space: nowrap;
+.clientRowActive {
+  background: #111;
+  color: #fff;
 }
 
-.additionalInfo {
-  font-size: 13px;
-  letter-spacing: 0.03em;
-  color: #333;
-  line-height: 1.8;
-  white-space: pre-wrap;
-  min-width: 100px;
+.clientTag {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: var(--color-nav-inactive);
+  visibility: hidden;
 }
 
-.rightColumnText {
-  font-size: 13px;
-  letter-spacing: 0.03em;
-  color: #333;
-  line-height: 1.8;
-  white-space: pre-wrap;
+.clientRowActive .clientTag {
+  visibility: visible;
+}
+
+/* Sticky left column + hover preview only on big screens */
+@media (min-width: 960px) and (min-height: 900px) {
+  .side {
+    position: sticky;
+    top: calc(var(--content-offset) + 40px);
+  }
+  .previewSlot {
+    display: block;
+  }
 }
 
 @media (max-width: 768px) {
   .page {
-    padding: 32px 24px;
-  }
-
-  .cols {
-    grid-template-columns: 1fr;
-    gap: 40px;
+    padding: 32px 24px 64px;
   }
 }

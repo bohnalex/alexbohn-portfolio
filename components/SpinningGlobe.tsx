@@ -3,8 +3,15 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 
-export default function SpinningGlobe() {
+export default function SpinningGlobe({ color = '#000000' }: { color?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const matRef = useRef<THREE.LineBasicMaterial | null>(null)
+  const colorRef = useRef(color)
+  colorRef.current = color
+
+  useEffect(() => {
+    matRef.current?.color.set(color)
+  }, [color])
 
   useEffect(() => {
     const canvas = canvasRef.current!
@@ -27,7 +34,8 @@ export default function SpinningGlobe() {
       )
     }
 
-    const mat = new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.75 })
+    const mat = new THREE.LineBasicMaterial({ color: colorRef.current, transparent: true, opacity: 0.75 })
+    matRef.current = mat
     const globe = new THREE.Group()
 
     for (let lat = -60; lat <= 60; lat += 30) {
