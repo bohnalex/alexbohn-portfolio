@@ -35,6 +35,15 @@ export default defineConfig({
                   .title('Info')
               ),
             S.listItem()
+              .title('Photo Studio')
+              .id('photoStudio')
+              .child(
+                S.document()
+                  .schemaType('photoStudio')
+                  .documentId('singleton-photoStudio')
+                  .title('Photo Studio')
+              ),
+            S.listItem()
               .title('Navigation Settings')
               .id('navSettings')
               .child(

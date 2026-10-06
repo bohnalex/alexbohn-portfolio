@@ -237,3 +237,26 @@ export async function getInfo(): Promise<Info | null> {
     { next: { revalidate: 60 } }
   )
 }
+
+// ─── Photo Studio (studio.alexbohn.com) ─────────────────────────────────────
+
+export interface PhotoStudio {
+  headline?: string
+  subhead?: string
+  details?: { _key?: string; label?: string; value?: string; link?: string }[]
+  specs?: string[]
+  heroImage?: SanityImageAsset
+  photos?: SanityImageAsset[]
+}
+
+export async function getPhotoStudio(): Promise<PhotoStudio | null> {
+  return client.fetch(
+    groq`*[_type == "photoStudio" && _id == "singleton-photoStudio"][0] {
+      headline, subhead, details, specs,
+      heroImage { ${IMAGE_FIELDS} },
+      photos[] { ${IMAGE_FIELDS} }
+    }`,
+    {},
+    { next: { revalidate: 60 } }
+  )
+}

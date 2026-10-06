@@ -6,6 +6,7 @@ import { motionEntrySchema } from './motionEntry'
 import { infoSchema } from './info'
 import { navSettingsSchema } from './navSettings'
 import { mobileRowSchema } from './mobileRow'
+import { photoStudioSchema } from './photoStudio'
 
 export const schemaTypes = [
   overviewSchema,
@@ -16,4 +17,5 @@ export const schemaTypes = [
   infoSchema,
   navSettingsSchema,
   mobileRowSchema,
+  photoStudioSchema,
 ]
