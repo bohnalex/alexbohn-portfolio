@@ -160,7 +160,7 @@ export default function Nav({ visibleLinks }: Props) {
         ref={navRef}
         className={styles.nav}
         onMouseLeave={(e) => {
-          if (logoRef.current?.contains(e.relatedTarget as Node)) return
+          if (e.relatedTarget instanceof Node && logoRef.current?.contains(e.relatedTarget)) return
           setHoveredHref(null)
         }}
       >
@@ -227,7 +227,7 @@ export default function Nav({ visibleLinks }: Props) {
             className={styles.logoLink}
             style={{ pointerEvents: 'all' }}
             onMouseLeave={(e) => {
-              const rt = e.relatedTarget as Node | null
+              const rt = e.relatedTarget instanceof Node ? e.relatedTarget : null
               const goingToNavLink = Array.from(linkRefs.current.values()).some(
                 el => el === rt || el.contains(rt)
               )
