@@ -102,6 +102,16 @@
   margin-top: 0;
 }
 
+/* Wide screens: pin the trip link to the bottom-left corner */
+@media (min-width: 960px) {
+  .trip {
+    position: fixed;
+    left: var(--grid-padding);
+    bottom: 28px;
+    z-index: 40;
+  }
+}
+
 /* ── Client list ─────────────────────────────────────────── */
 
 .main {
@@ -148,7 +158,7 @@
 }
 
 /* Sticky left column + hover preview only on big screens */
-@media (min-width: 960px) and (min-height: 900px) {
+@media (min-width: 960px) and (min-height: 820px) {
   .side {
     position: sticky;
     top: calc(var(--content-offset) + 40px);
