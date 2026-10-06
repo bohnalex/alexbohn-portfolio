@@ -41,6 +41,15 @@
   margin-top: 0;
 }
 
+.bio a {
+  color: var(--color-nav-inactive);
+  text-decoration: none;
+}
+
+.bio a:hover {
+  color: #32cdcd;
+}
+
 .contact {
   border-top: 1px solid #111;
 }
