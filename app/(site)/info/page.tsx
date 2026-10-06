@@ -18,10 +18,11 @@ const TEAL = '#32cdcd' // what the nav's red becomes on hover (difference blend)
 function blocksToNames(blocks: unknown[] | undefined): string[] {
   if (!blocks) return []
   return blocks
-    .map((b) => {
+    .flatMap((b) => {
       const children = (b as { children?: { text?: string }[] }).children ?? []
-      return children.map((c) => c.text ?? '').join('').trim()
+      return children.map((c) => c.text ?? '').join('').split(/\r?\n/)
     })
+    .map((name) => name.trim())
     .filter(Boolean)
 }
 
