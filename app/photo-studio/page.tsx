@@ -19,7 +19,7 @@ const DEFAULTS = {
   details: [
     { label: 'Location', value: '7th St & 3rd Ave, Gowanus', link: 'https://maps.google.com/?q=7th+St+%26+3rd+Ave,+Brooklyn,+NY' },
     { label: 'Train', value: 'F / G · Smith–9th St' },
-    { label: 'Size', value: '1,500 sq ft · 10 ft ceilings' },
+    { label: 'Size', value: '1,500 sq ft' },
     { label: 'Booking', value: 'alex@alexbohn.com', link: 'mailto:alex@alexbohn.com' },
   ],
   specs: [
