@@ -144,8 +144,8 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
   margin-top: 20px;
 }
 
@@ -154,13 +154,83 @@
   aspect-ratio: 4 / 3;
   background: #eee;
   overflow: hidden;
+  border: 0;
+  padding: 0;
+  cursor: zoom-in;
+  display: block;
+  width: 100%;
 }
 
-@media (min-width: 960px) and (min-height: 700px) {
-  .side {
-    position: sticky;
-    top: 24px;
-  }
+.photo img {
+  transition: transform 0.4s ease;
+}
+
+.photo:hover img {
+  transform: scale(1.03);
+}
+
+/* ── Lightbox ────────────────────────────────── */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.82);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  cursor: zoom-out;
+}
+
+.lightboxImage {
+  display: flex;
+  cursor: e-resize;
+}
+
+.lbBtn {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  background: none;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 26px;
+  color: var(--color-nav-inactive);
+  cursor: pointer;
+}
+
+.lbBtn:hover {
+  color: #32cdcd;
+}
+
+.lbPrev {
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lbNext {
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lbClose {
+  top: 12px;
+  right: 12px;
+  font-size: 22px;
+}
+
+.lbCount {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
 }
 
 @media (max-width: 768px) {

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Archivo, JetBrains_Mono } from 'next/font/google'
 import SanityImage from '@/components/SanityImage'
+import PhotoGrid from './PhotoGrid'
 import { getPhotoStudio } from '@/sanity/lib/queries'
 import styles from './page.module.css'
 
@@ -75,6 +76,13 @@ export default async function PhotoStudioPage() {
               </div>
             ))}
           </div>
+
+          {photos.length ? (
+            <section>
+              <p className={styles.label}>Photos</p>
+              <PhotoGrid photos={photos} />
+            </section>
+          ) : null}
         </aside>
 
         <div className={styles.main}>
@@ -95,18 +103,6 @@ export default async function PhotoStudioPage() {
             </ul>
           </section>
 
-          {photos.length ? (
-            <section>
-              <p className={styles.label}>Photos</p>
-              <div className={styles.grid}>
-                {photos.map((p, i) => (
-                  <div key={p._key ?? i} className={styles.photo}>
-                    <SanityImage image={p} alt="Photo studio" fill sizes="(max-width: 960px) 50vw, 22vw" />
-                  </div>
-                ))}
-              </div>
-            </section>
-          ) : null}
         </div>
       </section>
     </div>

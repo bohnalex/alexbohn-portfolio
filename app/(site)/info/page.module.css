@@ -43,7 +43,9 @@
 
 .bio a {
   color: var(--color-nav-inactive);
-  text-decoration: none;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.12em;
 }
 
 .bio a:hover {
