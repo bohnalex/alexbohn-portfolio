@@ -9,7 +9,7 @@ export default defineConfig({
   title: 'Alex Bohn Portfolio',
   projectId: '7qh9c83t',
   dataset: 'production',
-  basePath: '/studio',
+  basePath: '/cms',
   plugins: [
     structureTool({
       structure: (S, context) =>

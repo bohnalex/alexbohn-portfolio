@@ -14,7 +14,7 @@ export default async function OverviewPage() {
     return (
       <section className={styles.empty}>
         <p>No images yet</p>
-        <Link href="/studio">Add content in Studio →</Link>
+        <Link href="/cms">Add content in Studio →</Link>
       </section>
     )
   }

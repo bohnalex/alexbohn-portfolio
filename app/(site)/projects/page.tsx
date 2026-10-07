@@ -15,7 +15,7 @@ export default async function ProjectsPage() {
     return (
       <section className={listingStyles.empty}>
         <p>No projects yet</p>
-        <Link href="/studio">Add content in Studio →</Link>
+        <Link href="/cms">Add content in Studio →</Link>
       </section>
     )
   }
